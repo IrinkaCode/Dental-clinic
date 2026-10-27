@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Вход — клиника «АС Дент»</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/golos-text-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="img/logo-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 <body>
 <div class="auth">
     <aside class="auth__aside">
         <div>
-            <a href="index.html" class="auth__brand">АС Дент</a>
+            <a href="index.html" class="auth__logo" aria-label="АС Дент — на главную">
+                <img src="img/logo.svg" alt="АС Дент — авторская стоматология" width="627" height="200">
+            </a>
             <p class="auth__lead">Запишитесь к стоматологу, посмотрите историю визитов и ближайшие приёмы в личном кабинете.</p>
         </div>
         <div class="auth__contacts">
-            <p>г. Калининград, ул. Юбилейная, д. 12</p>
-            <p><a href="tel:+74951234567">+7 (911) 451-45-12</a></p>
-            <p>Пн–Пт 09:00–20:00, Сб 10:00–15:00</p>
+            <p data-clinic="address"></p>
+            <p><a data-clinic="phone"></a></p>
+            <p data-clinic="working_hours"></p>
         </div>
     </aside>
 
@@ -51,5 +53,6 @@
 </div>
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/cookie-notice.js"></script>
 </body>
 </html>

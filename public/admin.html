@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Панель администратора — клиника «АС Дент»</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/golos-text-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="img/logo-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 <body data-require-role="admin">
 <div class="admin">
     <aside class="admin__sidebar">
-        <div class="admin__logo">АС Дент</div>
+        <div class="admin__logo">
+            <span class="admin__logo-plate"><img src="img/logo-wordmark.svg" alt="АС Дент" width="627" height="104"></span>
+        </div>
         <div class="admin__role">Панель администратора</div>
         <!-- Разделы переключаются по адресу: admin.html#users и т. д. -->
         <nav class="admin__nav" aria-label="Разделы">

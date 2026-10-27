@@ -14,20 +14,49 @@
     11. Адаптивность
    ===================================================================== */
 
+/* Шрифт Golos Text хранится на нашем сервере (лицензия SIL OFL, см. fonts/LICENSE-GolosText.txt),
+   поэтому страницы не обращаются к сервисам Google и не передают им адреса посетителей. */
+@font-face {
+    font-family: 'Golos Text';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('../fonts/golos-text-cyrillic-wght-normal.woff2') format('woff2');
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+    font-family: 'Golos Text';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('../fonts/golos-text-latin-wght-normal.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Знак рубля «₽» лежит в этой части шрифта; файл загружается только там, где он есть на странице */
+@font-face {
+    font-family: 'Golos Text';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('../fonts/golos-text-latin-ext-wght-normal.woff2') format('woff2');
+    unicode-range: U+20A0-20C0;
+}
+
 /* 1. Переменные ------------------------------------------------------- */
 :root {
-    --enamel:   #F6F9F8;   /* фон страниц: «эмаль» */
+    --enamel:   #F4F8F2;   /* фон страниц: «эмаль» */
     --surface:  #FFFFFF;   /* фон карточек и форм */
-    --mint:     #DCEDE8;   /* мягкий фон выделений */
-    --line:     #CFDDD9;   /* рамки и разделители */
-    --ink:      #16302E;   /* основной текст */
-    --muted:    #5B706C;   /* второстепенный текст */
-    --pine:     #1D6B5F;   /* основной цвет: кнопки, ссылки */
-    --pine-dk:  #134C43;   /* наведение, тёмные панели */
+    --mint:     #E0EFDD;   /* мягкий фон выделений */
+    --line:     #D3E0D0;   /* рамки и разделители */
+    --ink:      #1F2B25;   /* основной текст */
+    --muted:    #56695B;   /* второстепенный текст */
+    --brand:    #43A047;   /* фирменный зелёный из логотипа (для декора, не для текста) */
+    --pine:     #2E7D32;   /* основной цвет: кнопки, ссылки (темнее фирменного, чтобы текст читался) */
+    --pine-dk:  #1F4E2A;   /* наведение, тёмные панели */
     --sun:      #F4C95D;   /* акцент: талон на приём */
     --danger:   #B3261E;
     --danger-bg:#FBEAE8;
-    --ok-bg:    #E3F1EC;
+    --ok-bg:    #E0EFDD;
 
     --font: 'Golos Text', 'Segoe UI', Roboto, Arial, sans-serif;
 
@@ -185,26 +214,31 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     justify-content: space-between;
     padding: 3rem;
     background: var(--pine-dk);
-    color: #E8F2EF;
+    color: #E4F0E1;
 }
 
-.auth__brand {
+/* Полный логотип на светлой подложке: на тёмно-зелёном фоне
+   тёмно-коричневые линии рисунка были бы почти не видны */
+.auth__logo {
     display: inline-block;
-    text-decoration: none;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -.03em;
-    color: #fff;
+    padding: 1.25rem 1.5rem;
+    background: var(--enamel);
+    border-radius: var(--radius-l);
+    line-height: 0;
+}
+.auth__logo img {
+    display: block;
+    width: clamp(12rem, 24vw, 19rem);
+    height: auto;
 }
 .auth__lead {
     max-width: 22rem;
     margin-top: 1.25rem;
     font-size: 1.125rem;
-    color: #BFD8D1;
+    color: #B5CFB2;
 }
 
-.auth__contacts { font-size: .9375rem; color: #BFD8D1; }
+.auth__contacts { font-size: .9375rem; color: #B5CFB2; }
 .auth__contacts p { margin: 0 0 .25rem; }
 .auth__contacts a { color: #fff; }
 
@@ -233,12 +267,17 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     align-items: center;
     gap: 2rem;
 }
-.topbar__logo {
-    font-size: 1.375rem;
-    font-weight: 700;
-    letter-spacing: -.02em;
-    color: var(--pine-dk);
+/* Логотип и название клиники в шапке */
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: .625rem;
     text-decoration: none;
+}
+.logo__img {
+    display: block;
+    height: 2.25rem;   /* размер логотипа меняется здесь */
+    width: auto;
 }
 .topbar__nav { display: flex; gap: .25rem; flex: 1; }
 .topbar__nav a {
@@ -389,6 +428,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .visit__info p { margin: 0; }
 
 .table-wrap {
+    position: relative;   /* скрытые подписи внутри таблицы обрезаются вместе с ней, а не растягивают страницу */
     overflow-x: auto;
     background: var(--surface);
     border: 1px solid var(--line);
@@ -399,7 +439,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .table td { padding: .875rem 1rem; text-align: left; border-bottom: 1px solid var(--line); }
 .table th { font-weight: 500; color: var(--muted); background: var(--enamel); white-space: nowrap; }
 .table tbody tr:last-child td { border-bottom: 0; }
-.table tbody tr:hover { background: #FAFCFB; }
+.table tbody tr:hover { background: #F8FBF6; }
 .table .num { text-align: right; white-space: nowrap; }
 .table .nowrap { white-space: nowrap; }
 .table--compact { font-size: .875rem; }
@@ -417,7 +457,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .status--planned   { background: #FDF1CF; color: #6B4E00; }
 .status--completed { background: var(--ok-bg); color: var(--pine-dk); }
-.status--cancelled { background: #EEF0EF; color: var(--muted); text-decoration: line-through; }
+.status--cancelled { background: #EDF0EA; color: var(--muted); text-decoration: line-through; }
 .status--blocked   { background: var(--danger-bg); color: var(--danger); }
 .status--admin     { background: var(--pine-dk); color: #fff; }
 
@@ -474,7 +514,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .choice input { position: absolute; opacity: 0; pointer-events: none; }
 .choice:hover { border-color: var(--pine); }
-.choice:has(input:checked) { border-color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); background: #F3F9F7; }
+.choice:has(input:checked) { border-color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); background: #EEF6EB; }
 .choice:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
 .choice__title { display: block; font-weight: 600; }
 .choice__meta { display: block; margin-top: .25rem; font-size: .875rem; color: var(--muted); }
@@ -499,9 +539,9 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .slot small { display: block; font-size: .75rem; color: var(--muted); }
 .slot:hover { border-color: var(--pine); }
 .slot:has(input:checked) { background: var(--pine); border-color: var(--pine); color: #fff; }
-.slot:has(input:checked) small { color: #CFE5DF; }
+.slot:has(input:checked) small { color: #DCEBD9; }
 .slot:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
-.slot:has(input:disabled) { cursor: not-allowed; color: #A9B7B4; background: var(--enamel); text-decoration: line-through; }
+.slot:has(input:disabled) { cursor: not-allowed; color: #A9B8A8; background: var(--enamel); text-decoration: line-through; }
 
 .fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 
@@ -534,22 +574,31 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     flex-direction: column;
     padding: 1.5rem 1rem;
     background: var(--pine-dk);
-    color: #E8F2EF;
+    color: #E4F0E1;
 }
-.admin__logo { padding: 0 .75rem; font-size: 1.375rem; font-weight: 700; color: #fff; }
-.admin__role { padding: 0 .75rem; margin-bottom: 2rem; font-size: .875rem; color: #9FC2B8; }
+.admin__logo { padding: 0 .75rem; }
+/* Светлая подложка под логотипом на тёмной боковой панели */
+.admin__logo-plate {
+    display: inline-block;
+    padding: .625rem .75rem;
+    background: var(--enamel);
+    border-radius: var(--radius-s);
+    line-height: 0;
+}
+.admin__logo-plate img { display: block; width: 9.5rem; height: auto; }
+.admin__role { padding: 0 .75rem; margin-bottom: 2rem; font-size: .875rem; color: #A3C4A0; }
 
 .admin__nav { display: grid; gap: .125rem; }
 .admin__nav a {
     padding: .625rem .75rem;
     border-radius: var(--radius-s);
-    color: #D4E6E1;
+    color: #D6E6D3;
     text-decoration: none;
 }
 .admin__nav a:hover { background: rgba(255, 255, 255, .08); color: #fff; }
 .admin__nav a[aria-current="page"] { background: var(--sun); color: var(--ink); font-weight: 500; }
 
-.admin__logout { margin-top: auto; padding: .625rem .75rem; color: #D4E6E1; }
+.admin__logout { margin-top: auto; padding: .625rem .75rem; color: #D6E6D3; }
 .admin__logout:hover { color: #fff; }
 
 .admin__main { padding: 2rem 2.5rem 4rem; min-width: 0; }
@@ -621,7 +670,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     max-height: calc(100vh - 2rem);
 }
 .modal__body { overflow-y: auto; }
-.modal::backdrop { background: rgba(22, 48, 46, .45); }
+.modal::backdrop { background: rgba(31, 43, 37, .45); }
 .modal__body { padding: 1.75rem; }
 .modal__footer {
     display: flex;
@@ -641,7 +690,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .topbar__phone:hover { color: var(--pine); }
 
 .home .topbar { position: sticky; top: 0; z-index: 10; }
-.home section[id] { scroll-margin-top: 4.5rem; }   /* якорь не прячется под шапкой */
+.home section[id] { scroll-margin-top: 4.75rem; }   /* якорь не прячется под шапкой */
 
 /* Первый экран: крупный заголовок слева, талон справа */
 .hero { padding: clamp(3rem, 8vw, 6rem) 1.5rem clamp(3rem, 7vw, 5rem); }
@@ -668,7 +717,6 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .hero__ticket {
     grid-template-columns: minmax(0, 1fr) 170px;
     transform: rotate(-2.5deg);
-    box-shadow: 0 18px 40px -18px rgba(19, 76, 67, .35);
     animation: ticket-in .7s cubic-bezier(.2, .8, .2, 1) both;
 }
 .hero__ticket .ticket__date { font-size: clamp(1.875rem, 3.2vw, 2.5rem); }
@@ -687,6 +735,26 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .home-block__head p { margin: 0; }
 .home-block__title { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -.025em; margin-bottom: .5rem; }
 
+/* О нас: текст слева, преимущества списком справа */
+.about {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+}
+.about__text .home-block__title { margin-bottom: 1.25rem; }
+.about__text p { max-width: 36rem; margin-bottom: 1rem; color: var(--muted); }
+.about__text .about__lead { font-size: 1.25rem; line-height: 1.45; color: var(--ink); }
+/* Фото клиники: без тени, с мягкими углами и тонкой рамкой */
+.about__photo { margin: 0; justify-self: end; width: 100%; max-width: 27rem; }
+.about__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+}
+
 /* «Как записаться» — настоящая последовательность, поэтому с номерами */
 .how {
     list-style: none;
@@ -697,7 +765,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     gap: 2rem;
     counter-reset: how;
 }
-.how__step { counter-increment: how; padding-top: 1rem; border-top: 2px solid var(--pine); }
+.how__step { counter-increment: how; padding-top: 1rem; border-top: 2px solid var(--brand); }
 .how__step::before {
     content: counter(how);
     display: block;
@@ -738,8 +806,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     padding: 1.5rem;
     background: var(--surface);
     border: 1px solid var(--line);
-    border-left: 4px solid var(--pine);
-    border-radius: var(--radius-s);
+    border-radius: var(--radius-m);
 }
 .doctor-card h3 { margin-bottom: .25rem; font-size: 1.125rem; }
 .doctor-card p { margin: 0 0 .75rem; }
@@ -748,7 +815,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .doctor-card__services { font-size: .875rem; color: var(--muted); }
 
 /* Контакты на тёмном фоне */
-.contacts-band { padding: clamp(3rem, 6vw, 4.5rem) 1.5rem; background: var(--pine-dk); color: #E8F2EF; }
+.contacts-band { padding: clamp(3rem, 6vw, 4.5rem) 1.5rem; background: var(--pine-dk); color: #E4F0E1; }
 .contacts-band__inner {
     max-width: var(--page-width);
     margin: 0 auto;
@@ -759,10 +826,10 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .contacts-band .home-block__title { color: #fff; margin-bottom: 1.5rem; }
 .contacts-band__list { display: grid; grid-template-columns: auto 1fr; gap: .625rem 2rem; margin: 0; }
-.contacts-band__list dt { color: #9FC2B8; }
+.contacts-band__list dt { color: #A3C4A0; }
 .contacts-band__list dd { margin: 0; color: #fff; }
 .contacts-band__list a { color: #fff; }
-.contacts-band__cta p { max-width: 26rem; font-size: 1.125rem; color: #BFD8D1; }
+.contacts-band__cta p { max-width: 26rem; font-size: 1.125rem; color: #B5CFB2; }
 
 .site-footer { padding: 1.5rem; font-size: .875rem; color: var(--muted); }
 .site-footer__inner {
@@ -775,6 +842,48 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .site-footer a { color: var(--muted); }
 
+/* 10б. Юридические страницы (согласие на обработку данных) ------------ */
+.topbar__spacer { flex: 1; }
+
+.doc { max-width: 46rem; }
+.doc h1 { margin-bottom: .25rem; font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -.025em; }
+.doc__date { margin-bottom: 2rem; color: var(--muted); }
+.doc h2 { margin: 2rem 0 .5rem; font-size: 1.1875rem; }
+.doc ul { margin: 0 0 1em; padding-left: 1.25rem; }
+.doc li { margin-bottom: .375rem; }
+.doc__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.5rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+}
+
+/* 10в. Уведомление о cookie и ссылки в подвале -------------------------- */
+.cookie-notice {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 50;
+    max-width: 46rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    font-size: .9375rem;
+}
+.cookie-notice p { margin: 0; }
+.cookie-notice .btn { flex: none; }
+
+.site-footer__links { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
+.doc code { padding: .0625rem .375rem; background: var(--enamel); border-radius: 4px; font-size: .875em; }
+
 /* 11. Адаптивность ---------------------------------------------------- */
 @media (max-width: 900px) {
     .layout-aside,
@@ -782,7 +891,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     .summary { position: static; }
     .stats { grid-template-columns: 1fr; }
 
-    .admin { grid-template-columns: 1fr; }
+    .admin { grid-template-columns: minmax(0, 1fr); }   /* minmax(0,…): широкая таблица прокручивается внутри блока, а не раздвигает страницу */
     .admin__sidebar { flex-direction: row; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; }
     .admin__role { display: none; }
     .admin__nav { display: flex; flex-wrap: wrap; }
@@ -792,13 +901,17 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 
 @media (max-width: 900px) {
     .hero__inner,
+    .about,
     .contacts-band__inner { grid-template-columns: 1fr; }
+    .about__photo { justify-self: start; max-width: 30rem; }
     .hero__ticket { max-width: 520px; }
     .how { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 
 @media (max-width: 720px) {
     h1 { font-size: 1.625rem; }
+    .cookie-notice { flex-direction: column; align-items: stretch; }
+    .schedule__table { display: block; max-width: 100%; overflow-x: auto; }   /* таблица расписания прокручивается внутри панели */
     .hero__title { font-size: 2.375rem; }
     .topbar__phone { display: none; }
     .price-row { grid-template-columns: 1fr auto; gap: .25rem 1rem; }

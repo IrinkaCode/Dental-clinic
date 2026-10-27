@@ -56,5 +56,12 @@
     });
 
     document.body.classList.add('is-ready');
+
+    // Сообщаем о готовности только когда страница полностью разобрана и все её
+    // скрипты уже запущены и подписались на событие. Без этого ответ сервера
+    // мог прийти раньше, чем загрузятся остальные скрипты, и событие терялось.
+    if (document.readyState === 'loading') {
+        await new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve, { once: true }));
+    }
     document.dispatchEvent(new CustomEvent('user:ready', { detail: user }));
 })();

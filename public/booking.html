@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Запись на приём — клиника «АС Дент»</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/golos-text-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="img/logo-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 <body data-require-role="patient">
 <header class="topbar">
     <div class="topbar__inner">
-        <a href="cabinet.html" class="topbar__logo">АС Дент</a>
+        <a href="cabinet.html" class="logo">
+            <img src="img/logo-wordmark.svg" alt="АС Дент" class="logo__img" width="627" height="104">
+        </a>
         <nav class="topbar__nav" aria-label="Основное меню">
             <a href="cabinet.html">Мои визиты</a>
             <a href="booking.html" aria-current="page">Записаться</a>

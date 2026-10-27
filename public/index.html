@@ -5,28 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Стоматологическая клиника «АС Дент» — запись онлайн</title>
     <meta name="description" content="Стоматологическая клиника «АС Дент»: лечение, гигиена, хирургия и ортодонтия. Цены на услуги, врачи и онлайн-запись на приём.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/golos-text-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="img/logo-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 <body class="home">
 <header class="topbar">
     <div class="topbar__inner">
-        <a href="index.html" class="topbar__logo">АС Дент</a>
+        <a href="index.html" class="logo">
+            <img src="img/logo-wordmark.svg" alt="АС Дент" class="logo__img" width="627" height="104">
+        </a>
         <nav class="topbar__nav" aria-label="Разделы страницы">
+            <a href="#about">О нас</a>
             <a href="#prices">Услуги и цены</a>
             <a href="#doctors">Врачи</a>
             <a href="#contacts">Контакты</a>
         </nav>
         <div class="topbar__user">
             <a class="topbar__phone" data-clinic-phone></a>
+            <!-- Текст и адрес меняет home.js: «Войти» или «Личный кабинет» -->
             <a href="login.html" class="btn btn--ghost btn--small" id="account-link">Войти</a>
         </div>
     </div>
 </header>
 
 <main>
+    <!-- ================================ ПЕРВЫЙ ЭКРАН ============================== -->
     <section class="hero" aria-labelledby="hero-title">
         <div class="hero__inner">
             <div class="hero__text">
@@ -38,6 +43,7 @@
                 </div>
             </div>
 
+            <!-- Талон на приём — фирменный образ клиники, как и в личном кабинете -->
             <article class="ticket hero__ticket" aria-label="Как устроена онлайн-запись">
                 <div class="ticket__body">
                     <div class="ticket__title">Онлайн-запись</div>
@@ -56,6 +62,25 @@
         </div>
     </section>
 
+    <!-- ================================== О НАС ==================================
+         Текст можно свободно менять: замените его сведениями о вашей клинике
+         (год основания, оборудование, лицензии, особенности работы). -->
+    <section class="home-block home-block--surface" id="about" aria-labelledby="about-title">
+        <div class="home-block__inner about">
+            <div class="about__text">
+                <h2 class="home-block__title" id="about-title">О нас</h2>
+                <p class="about__lead">«АС Дент» — авторская стоматология, в которой лечат бережно, а записываются на приём без звонков и очередей.</p>
+                <p>У нас можно пройти осмотр и консультацию, сделать профессиональную гигиену, вылечить кариес и пульпит, удалить зуб и проконсультироваться у ортодонта. Врачи принимают по расписанию, поэтому свободное время видно заранее, и вы выбираете удобное.</p>
+                <p>Перед лечением врач проводит осмотр и объясняет план. Все ваши визиты и история лечения хранятся в личном кабинете: их можно посмотреть в любой момент.</p>
+            </div>
+
+            <figure class="about__photo">
+                <img src="img/clinic.jpg" alt="Холл клиники «АС Дент»: стойка администратора и зона ожидания" width="592" height="753" loading="lazy">
+            </figure>
+        </div>
+    </section>
+
+    <!-- ================================ КАК ЗАПИСАТЬСЯ ============================ -->
     <section class="home-block" aria-labelledby="how-title">
         <div class="home-block__inner">
             <h2 class="home-block__title" id="how-title">Как записаться</h2>
@@ -76,6 +101,7 @@
         </div>
     </section>
 
+    <!-- ================================ УСЛУГИ И ЦЕНЫ ============================= -->
     <section class="home-block home-block--surface" id="prices" aria-labelledby="prices-title">
         <div class="home-block__inner">
             <div class="home-block__head">
@@ -87,6 +113,7 @@
         </div>
     </section>
 
+    <!-- =================================== ВРАЧИ ================================== -->
     <section class="home-block" id="doctors" aria-labelledby="doctors-title">
         <div class="home-block__inner">
             <div class="home-block__head">
@@ -98,6 +125,7 @@
         </div>
     </section>
 
+    <!-- ================================== КОНТАКТЫ ================================ -->
     <section class="contacts-band" id="contacts" aria-labelledby="contacts-title">
         <div class="contacts-band__inner">
             <div>
@@ -120,11 +148,15 @@
 <footer class="site-footer">
     <div class="site-footer__inner">
         <span data-clinic="name">Стоматологическая клиника «АС Дент»</span>
-        <a href="login.html">Вход для пациентов и сотрудников</a>
+        <nav class="site-footer__links" aria-label="Документы и вход">
+            <a href="privacy.html">Политика обработки персональных данных</a>
+            <a href="consent.html">Согласие на обработку персональных данных</a>
+        </nav>
     </div>
 </footer>
 
 <script src="js/api.js"></script>
 <script src="js/home.js"></script>
+<script src="js/cookie-notice.js"></script>
 </body>
 </html>

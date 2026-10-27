@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Мои визиты — клиника «АС Дент»</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/golos-text-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="img/logo-mark.svg">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 <body data-require-role="patient">
 <header class="topbar">
     <div class="topbar__inner">
-        <a href="cabinet.html" class="topbar__logo">АС Дент</a>
+        <a href="cabinet.html" class="logo">
+            <img src="img/logo-wordmark.svg" alt="АС Дент" class="logo__img" width="627" height="104">
+        </a>
         <nav class="topbar__nav" aria-label="Основное меню">
             <a href="cabinet.html" aria-current="page">Мои визиты</a>
             <a href="booking.html">Записаться</a>
@@ -36,7 +38,7 @@
 
     <div class="layout-aside">
         <div>
-            <!-- Ближайший приём -->
+            <!-- Ближайший приём. Заполняет cabinet.js -->
             <section class="section" aria-labelledby="next-title">
                 <h2 id="next-title" class="visually-hidden">Ближайший приём</h2>
 
@@ -113,7 +115,7 @@
     </div>
 </main>
 
-<!-- Шаблоны строк -->
+<!-- Шаблоны строк. Браузер их не показывает; cabinet.js копирует и заполняет -->
 <template id="visit-template">
     <li class="visit">
         <div class="visit__date"><span class="visit__day" data-field="date"></span><span data-field="weekday-time"></span></div>

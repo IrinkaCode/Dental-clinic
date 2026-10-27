@@ -1,0 +1,6 @@
+# Ключи шифрования и база с персональными данными не должны попасть в репозиторий
+config/config.php
+database/*.sqlite
+database/*.sqlite-*
+logs/*.log
+.idea/

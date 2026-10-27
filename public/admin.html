@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Панель администратора — клиника «АС Дент»</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-require-role="admin">
+<div class="admin">
+    <aside class="admin__sidebar">
+        <div class="admin__logo">АС Дент</div>
+        <div class="admin__role">Панель администратора</div>
+        <!-- Разделы переключаются по адресу: admin.html#users и т. д. -->
+        <nav class="admin__nav" aria-label="Разделы">
+            <a href="#appointments">Записи</a>
+            <a href="#users">Пользователи</a>
+            <a href="#doctors">Врачи</a>
+            <a href="#services">Услуги</a>
+            <a href="#schedule">Расписание</a>
+            <a href="#clinic">Контакты клиники</a>
+            <a href="#log">Журнал действий</a>
+        </nav>
+        <a href="index.html" class="admin__logout" data-logout>Выйти</a>
+    </aside>
+
+    <main class="admin__main">
+        <div class="alert" id="admin-alert" role="status" hidden></div>
+
+        <!-- ============================ ЗАПИСИ ============================ -->
+        <section class="admin-section" data-section="appointments" hidden>
+            <div class="page__header">
+                <h1>Записи на приём</h1>
+                <p class="muted">Отмечайте состоявшиеся приёмы, переносите и создавайте записи по телефону.</p>
+            </div>
+
+            <div class="stats">
+                <div class="stat"><div class="stat__value" data-stat="today">—</div><div class="stat__label">Приёмов сегодня</div></div>
+                <div class="stat"><div class="stat__value" data-stat="week">—</div><div class="stat__label">Запланировано на 7 дней</div></div>
+                <button type="button" class="stat stat--link" id="show-overdue">
+                    <span class="stat__value" data-stat="overdue">—</span><span class="stat__label">Ожидают отметки</span>
+                </button>
+                <div class="stat"><div class="stat__value" data-stat="patients">—</div><div class="stat__label">Пациентов</div></div>
+            </div>
+
+            <form class="toolbar" id="appointments-filter">
+                <div class="field">
+                    <label for="ap-from">С даты</label>
+                    <input type="date" id="ap-from" name="date_from">
+                </div>
+                <div class="field">
+                    <label for="ap-to">По дату</label>
+                    <input type="date" id="ap-to" name="date_to">
+                </div>
+                <div class="field">
+                    <label for="ap-doctor">Врач</label>
+                    <select id="ap-doctor" name="doctor_id"><option value="">Все</option></select>
+                </div>
+                <div class="field">
+                    <label for="ap-status">Статус</label>
+                    <select id="ap-status" name="status">
+                        <option value="">Все</option>
+                        <option value="planned">Запланирован</option>
+                        <option value="overdue">Ожидает отметки</option>
+                        <option value="completed">Состоялся</option>
+                        <option value="cancelled">Отменён</option>
+                    </select>
+                </div>
+                <div class="field field--grow">
+                    <label for="ap-q">Пациент</label>
+                    <input type="search" id="ap-q" name="q" placeholder="ФИО или телефон">
+                </div>
+                <button type="button" class="btn btn--primary" id="appointment-add">Новая запись</button>
+            </form>
+
+            <div class="table-wrap">
+                <table class="table table--compact">
+                    <thead>
+                    <tr>
+                        <th scope="col">Дата и время</th>
+                        <th scope="col">Пациент</th>
+                        <th scope="col">Врач</th>
+                        <th scope="col">Услуга</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col"><span class="visually-hidden">Действия</span></th>
+                    </tr>
+                    </thead>
+                    <tbody id="appointments-body"></tbody>
+                </table>
+            </div>
+            <p class="muted table-count" id="appointments-count"></p>
+        </section>
+
+        <!-- ========================== ПОЛЬЗОВАТЕЛИ ========================= -->
+        <section class="admin-section" data-section="users" hidden>
+            <div class="page__header">
+                <h1>Пользователи</h1>
+                <p class="muted">Учётные записи пациентов и администраторов.</p>
+            </div>
+
+            <form class="toolbar" id="users-filter">
+                <div class="field field--grow">
+                    <label for="us-q">Поиск</label>
+                    <input type="search" id="us-q" name="q" placeholder="ФИО, email или телефон">
+                </div>
+                <div class="field">
+                    <label for="us-role">Роль</label>
+                    <select id="us-role" name="role">
+                        <option value="">Все</option>
+                        <option value="patient">Пациенты</option>
+                        <option value="admin">Администраторы</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="us-status">Статус</label>
+                    <select id="us-status" name="status">
+                        <option value="">Все</option>
+                        <option value="1">Активные</option>
+                        <option value="0">Заблокированные</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn--primary" id="user-add">Добавить пользователя</button>
+            </form>
+
+            <div class="table-wrap">
+                <table class="table table--compact">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Телефон</th>
+                        <th scope="col">Роль</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Регистрация</th>
+                        <th scope="col"><span class="visually-hidden">Действия</span></th>
+                    </tr>
+                    </thead>
+                    <tbody id="users-body"></tbody>
+                </table>
+            </div>
+            <p class="muted table-count" id="users-count"></p>
+        </section>
+
+        <!-- ============================= ВРАЧИ ============================= -->
+        <section class="admin-section" data-section="doctors" hidden>
+            <div class="page__header section__head">
+                <div>
+                    <h1>Врачи</h1>
+                    <p class="muted">Врачи и услуги, которые они оказывают.</p>
+                </div>
+                <button type="button" class="btn btn--primary" id="doctor-add">Добавить врача</button>
+            </div>
+            <div class="table-wrap">
+                <table class="table table--compact">
+                    <thead>
+                    <tr>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">Специальность</th>
+                        <th scope="col">Услуги</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col"><span class="visually-hidden">Действия</span></th>
+                    </tr>
+                    </thead>
+                    <tbody id="doctors-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============================= УСЛУГИ ============================ -->
+        <section class="admin-section" data-section="services" hidden>
+            <div class="page__header section__head">
+                <div>
+                    <h1>Услуги</h1>
+                    <p class="muted">Скрытые услуги не показываются при записи, но остаются в истории.</p>
+                </div>
+                <button type="button" class="btn btn--primary" id="service-add">Добавить услугу</button>
+            </div>
+            <div class="table-wrap">
+                <table class="table table--compact">
+                    <thead>
+                    <tr>
+                        <th scope="col">Название</th>
+                        <th scope="col">Длительность</th>
+                        <th scope="col" class="num">Цена</th>
+                        <th scope="col" class="num">Врачей</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col"><span class="visually-hidden">Действия</span></th>
+                    </tr>
+                    </thead>
+                    <tbody id="services-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- =========================== РАСПИСАНИЕ ========================== -->
+        <section class="admin-section" data-section="schedule" hidden>
+            <div class="page__header">
+                <h1>Расписание врачей</h1>
+                <p class="muted">По расписанию пациенты видят свободное время для записи. Уже сделанные записи при изменении не удаляются.</p>
+            </div>
+
+            <form id="schedule-form" class="panel schedule">
+                <div class="field schedule__doctor">
+                    <label for="schedule-doctor">Врач</label>
+                    <select id="schedule-doctor" name="doctor_id"></select>
+                </div>
+
+                <div class="alert alert--error" id="schedule-error" role="alert" hidden></div>
+
+                <table class="table schedule__table">
+                    <thead>
+                    <tr>
+                        <th scope="col">День</th>
+                        <th scope="col">Рабочий день</th>
+                        <th scope="col">Начало</th>
+                        <th scope="col">Окончание</th>
+                    </tr>
+                    </thead>
+                    <tbody id="schedule-body"></tbody>
+                </table>
+
+                <div class="form__actions">
+                    <button type="submit" class="btn btn--primary">Сохранить расписание</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ======================== КОНТАКТЫ КЛИНИКИ ======================= -->
+        <section class="admin-section" data-section="clinic" hidden>
+            <div class="page__header">
+                <h1>Контакты клиники</h1>
+                <p class="muted">Эти данные видят пациенты в личном кабинете.</p>
+            </div>
+
+            <form id="clinic-form" class="panel form clinic-form" novalidate>
+                <div class="alert alert--error" id="clinic-error" role="alert" hidden></div>
+                <div class="field">
+                    <label for="cl-name">Название</label>
+                    <input type="text" id="cl-name" name="name" maxlength="200">
+                    <span class="field__error" data-error-for="name"></span>
+                </div>
+                <div class="field">
+                    <label for="cl-address">Адрес</label>
+                    <input type="text" id="cl-address" name="address" maxlength="200">
+                    <span class="field__error" data-error-for="address"></span>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="cl-phone">Телефон</label>
+                        <input type="tel" id="cl-phone" name="phone" maxlength="200">
+                        <span class="field__error" data-error-for="phone"></span>
+                    </div>
+                    <div class="field">
+                        <label for="cl-email">Email</label>
+                        <input type="email" id="cl-email" name="email" maxlength="200">
+                        <span class="field__error" data-error-for="email"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="cl-hours">Часы работы</label>
+                    <input type="text" id="cl-hours" name="working_hours" maxlength="200">
+                    <span class="field__error" data-error-for="working_hours"></span>
+                </div>
+                <div class="form__actions">
+                    <button type="submit" class="btn btn--primary">Сохранить</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ========================= ЖУРНАЛ ДЕЙСТВИЙ ======================= -->
+        <section class="admin-section" data-section="log" hidden>
+            <div class="page__header">
+                <h1>Журнал действий</h1>
+                <p class="muted">Последние 300 событий: входы, записи, изменения данных.</p>
+            </div>
+            <div class="table-wrap">
+                <table class="table table--compact">
+                    <thead>
+                    <tr>
+                        <th scope="col">Время</th>
+                        <th scope="col">Пользователь</th>
+                        <th scope="col">Действие</th>
+                        <th scope="col">Объект</th>
+                    </tr>
+                    </thead>
+                    <tbody id="log-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ======================== ОКНО: ПОЛЬЗОВАТЕЛЬ ======================== -->
+<dialog class="modal" id="user-dialog" aria-labelledby="user-dialog-title">
+    <form class="form" novalidate>
+        <div class="modal__body form">
+            <h2 id="user-dialog-title">Пользователь</h2>
+            <div class="alert alert--error" role="alert" hidden></div>
+            <input type="hidden" name="id">
+
+            <div class="field">
+                <label for="u-full-name">ФИО</label>
+                <input type="text" id="u-full-name" name="full_name" maxlength="100">
+                <span class="field__error" data-error-for="full_name"></span>
+            </div>
+            <div class="field">
+                <label for="u-email">Email</label>
+                <input type="email" id="u-email" name="email">
+                <span class="field__error" data-error-for="email"></span>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="u-phone">Телефон</label>
+                    <input type="tel" id="u-phone" name="phone">
+                    <span class="field__error" data-error-for="phone"></span>
+                </div>
+                <div class="field">
+                    <label for="u-birth">Дата рождения</label>
+                    <input type="date" id="u-birth" name="birth_date">
+                    <span class="field__error" data-error-for="birth_date"></span>
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="u-role">Роль</label>
+                    <select id="u-role" name="role">
+                        <option value="patient">Пациент</option>
+                        <option value="admin">Администратор</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="u-password">Пароль</label>
+                    <input type="password" id="u-password" name="password" autocomplete="new-password">
+                    <span class="field__hint" data-hint="password"></span>
+                    <span class="field__error" data-error-for="password"></span>
+                </div>
+            </div>
+            <label class="checkbox">
+                <input type="checkbox" name="is_blocked">
+                <span>Заблокировать учётную запись: пользователь не сможет войти</span>
+            </label>
+        </div>
+        <div class="modal__footer">
+            <button type="button" class="btn btn--danger" data-action="delete">Удалить</button>
+            <button type="button" class="btn btn--ghost" data-action="close">Отмена</button>
+            <button type="submit" class="btn btn--primary">Сохранить</button>
+        </div>
+    </form>
+</dialog>
+
+<!-- =========================== ОКНО: ЗАПИСЬ =========================== -->
+<dialog class="modal" id="appointment-dialog" aria-labelledby="appointment-dialog-title">
+    <form class="form" novalidate>
+        <div class="modal__body form">
+            <h2 id="appointment-dialog-title">Запись</h2>
+            <div class="alert alert--error" role="alert" hidden></div>
+            <input type="hidden" name="id">
+
+            <div class="field">
+                <label for="a-patient">Пациент</label>
+                <select id="a-patient" name="user_id"></select>
+                <span class="field__error" data-error-for="user_id"></span>
+            </div>
+            <div class="field">
+                <label for="a-service">Услуга</label>
+                <select id="a-service" name="service_id"></select>
+                <span class="field__error" data-error-for="service_id"></span>
+            </div>
+            <div class="field">
+                <label for="a-doctor">Врач</label>
+                <select id="a-doctor" name="doctor_id"></select>
+                <span class="field__error" data-error-for="doctor_id"></span>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="a-date">Дата</label>
+                    <input type="date" id="a-date" name="date">
+                    <span class="field__error" data-error-for="date"></span>
+                </div>
+                <div class="field">
+                    <label for="a-time">Время</label>
+                    <input type="time" id="a-time" name="time" step="900">
+                    <span class="field__error" data-error-for="time"></span>
+                </div>
+            </div>
+            <div class="field">
+                <label for="a-status">Статус</label>
+                <select id="a-status" name="status">
+                    <option value="planned">Запланирован</option>
+                    <option value="completed">Состоялся</option>
+                    <option value="cancelled">Отменён</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="a-comment">Комментарий</label>
+                <textarea id="a-comment" name="comment" rows="2" maxlength="500"></textarea>
+            </div>
+        </div>
+        <div class="modal__footer">
+            <button type="button" class="btn btn--danger" data-action="delete">Удалить</button>
+            <button type="button" class="btn btn--ghost" data-action="close">Отмена</button>
+            <button type="submit" class="btn btn--primary">Сохранить</button>
+        </div>
+    </form>
+</dialog>
+
+<!-- ============================ ОКНО: ВРАЧ ============================ -->
+<dialog class="modal" id="doctor-dialog" aria-labelledby="doctor-dialog-title">
+    <form class="form" novalidate>
+        <div class="modal__body form">
+            <h2 id="doctor-dialog-title">Врач</h2>
+            <div class="alert alert--error" role="alert" hidden></div>
+            <input type="hidden" name="id">
+
+            <div class="field">
+                <label for="d-name">ФИО</label>
+                <input type="text" id="d-name" name="full_name" maxlength="100">
+                <span class="field__error" data-error-for="full_name"></span>
+            </div>
+            <div class="field">
+                <label for="d-specialty">Специальность</label>
+                <input type="text" id="d-specialty" name="specialty" maxlength="100" placeholder="Например: стоматолог-терапевт">
+                <span class="field__error" data-error-for="specialty"></span>
+            </div>
+            <div class="field">
+                <label for="d-description">Описание</label>
+                <textarea id="d-description" name="description" rows="2" maxlength="1000" placeholder="Стаж, специализация"></textarea>
+            </div>
+            <fieldset class="fieldset">
+                <legend class="field__legend">Оказывает услуги</legend>
+                <div class="checklist" id="doctor-services"></div>
+                <span class="field__error" data-error-for="service_ids"></span>
+            </fieldset>
+            <label class="checkbox">
+                <input type="checkbox" name="is_active">
+                <span>Принимает пациентов (доступен для записи)</span>
+            </label>
+        </div>
+        <div class="modal__footer">
+            <button type="button" class="btn btn--danger" data-action="delete">Удалить</button>
+            <button type="button" class="btn btn--ghost" data-action="close">Отмена</button>
+            <button type="submit" class="btn btn--primary">Сохранить</button>
+        </div>
+    </form>
+</dialog>
+
+<!-- =========================== ОКНО: УСЛУГА =========================== -->
+<dialog class="modal" id="service-dialog" aria-labelledby="service-dialog-title">
+    <form class="form" novalidate>
+        <div class="modal__body form">
+            <h2 id="service-dialog-title">Услуга</h2>
+            <div class="alert alert--error" role="alert" hidden></div>
+            <input type="hidden" name="id">
+
+            <div class="field">
+                <label for="s-name">Название</label>
+                <input type="text" id="s-name" name="name" maxlength="100">
+                <span class="field__error" data-error-for="name"></span>
+            </div>
+            <div class="field">
+                <label for="s-description">Описание</label>
+                <textarea id="s-description" name="description" rows="2" maxlength="500"></textarea>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="s-price">Цена, ₽</label>
+                    <input type="number" id="s-price" name="price" min="0" max="1000000" step="50">
+                    <span class="field__error" data-error-for="price"></span>
+                </div>
+                <div class="field">
+                    <label for="s-duration">Длительность</label>
+                    <select id="s-duration" name="duration_min"></select>
+                    <span class="field__error" data-error-for="duration_min"></span>
+                </div>
+            </div>
+            <label class="checkbox">
+                <input type="checkbox" name="is_active">
+                <span>Доступна для записи</span>
+            </label>
+        </div>
+        <div class="modal__footer">
+            <button type="button" class="btn btn--danger" data-action="delete">Удалить</button>
+            <button type="button" class="btn btn--ghost" data-action="close">Отмена</button>
+            <button type="submit" class="btn btn--primary">Сохранить</button>
+        </div>
+    </form>
+</dialog>
+
+<script src="js/api.js"></script>
+<script src="js/session.js"></script>
+<script src="js/admin/core.js"></script>
+<script src="js/admin/appointments.js"></script>
+<script src="js/admin/users.js"></script>
+<script src="js/admin/doctors.js"></script>
+<script src="js/admin/services.js"></script>
+<script src="js/admin/schedule.js"></script>
+<script src="js/admin/clinic.js"></script>
+<script src="js/admin/log.js"></script>
+</body>
+</html>

@@ -1,0 +1,832 @@
+/* =====================================================================
+   Стоматологическая клиника «АС Дент» — общая таблица стилей
+   Структура:
+     1. Переменные (цвета, шрифты, отступы)
+     2. Базовые стили
+     3. Кнопки, формы, сообщения
+     4. Страницы входа и регистрации
+     5. Шапка и каркас кабинета
+     6. Талон на приём
+     7. Списки визитов, таблицы, статусы
+     8. Профиль
+     9. Запись на приём
+    10. Панель администратора
+    11. Адаптивность
+   ===================================================================== */
+
+/* 1. Переменные ------------------------------------------------------- */
+:root {
+    --enamel:   #F6F9F8;   /* фон страниц: «эмаль» */
+    --surface:  #FFFFFF;   /* фон карточек и форм */
+    --mint:     #DCEDE8;   /* мягкий фон выделений */
+    --line:     #CFDDD9;   /* рамки и разделители */
+    --ink:      #16302E;   /* основной текст */
+    --muted:    #5B706C;   /* второстепенный текст */
+    --pine:     #1D6B5F;   /* основной цвет: кнопки, ссылки */
+    --pine-dk:  #134C43;   /* наведение, тёмные панели */
+    --sun:      #F4C95D;   /* акцент: талон на приём */
+    --danger:   #B3261E;
+    --danger-bg:#FBEAE8;
+    --ok-bg:    #E3F1EC;
+
+    --font: 'Golos Text', 'Segoe UI', Roboto, Arial, sans-serif;
+
+    --radius-s: 8px;
+    --radius-m: 12px;
+    --radius-l: 18px;
+
+    --gap: 1.5rem;
+    --page-width: 1120px;
+}
+
+/* 2. Базовые стили ---------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--enamel);
+}
+
+h1, h2, h3 {
+    margin: 0 0 .5em;
+    line-height: 1.2;
+    font-weight: 600;
+}
+h1 { font-size: 2rem;    letter-spacing: -.02em; }
+h2 { font-size: 1.375rem; letter-spacing: -.01em; }
+h3 { font-size: 1.0625rem; }
+
+p { margin: 0 0 1em; }
+
+a { color: var(--pine); text-underline-offset: 3px; }
+a:hover { color: var(--pine-dk); }
+
+:focus-visible {
+    outline: 3px solid var(--sun);
+    outline-offset: 2px;
+}
+
+.muted { color: var(--muted); }
+
+/* Атрибут hidden всегда скрывает элемент, даже если у класса задан display */
+[hidden] { display: none !important; }
+
+/* Закрытые страницы скрыты, пока session.js проверяет вход */
+body[data-require-role]:not(.is-ready) { visibility: hidden; }
+
+.visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* 3. Кнопки, формы, сообщения ---------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-s);
+    font: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .15s, border-color .15s;
+}
+.btn--primary { background: var(--pine); color: #fff; }
+.btn--primary:hover { background: var(--pine-dk); color: #fff; }
+
+.btn--ghost { background: transparent; color: var(--pine); border-color: var(--line); }
+.btn--ghost:hover { border-color: var(--pine); }
+
+.btn--danger { background: transparent; color: var(--danger); border-color: currentColor; }
+.btn--danger:hover { background: var(--danger-bg); }
+
+.btn--small { padding: .4rem .75rem; font-size: .875rem; }
+.btn--block { width: 100%; }
+
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.form { display: grid; gap: 1.125rem; }
+
+.field { display: grid; gap: .375rem; }
+
+.field label { font-weight: 500; font-size: .9375rem; }
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: .7rem .875rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    background: var(--surface);
+    font: inherit;
+    color: var(--ink);
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--pine);
+    box-shadow: 0 0 0 3px var(--mint);
+}
+/* Одинаковая высота однострочных полей и списков */
+.field input,
+.field select { height: 2.875rem; }
+.field input[type="search"] { -webkit-appearance: none; appearance: none; }
+.field input[type="checkbox"],
+.field input[type="radio"] { height: auto; }
+
+.field input:user-invalid,
+.field [aria-invalid="true"] { border-color: var(--danger); }
+
+.field__hint  { font-size: .8125rem; color: var(--muted); }
+.field__error { font-size: .8125rem; color: var(--danger); }
+.field__error:empty { display: none; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.checkbox { display: flex; gap: .625rem; align-items: flex-start; font-size: .9375rem; }
+.checkbox input { margin-top: .25rem; accent-color: var(--pine); }
+
+.alert {
+    padding: .875rem 1rem;
+    border-radius: var(--radius-s);
+    font-size: .9375rem;
+}
+.alert--error   { background: var(--danger-bg); color: var(--danger); }
+.alert--success { background: var(--ok-bg); color: var(--pine-dk); }
+.alert[hidden]  { display: none; }
+.page > .alert { margin-bottom: 1.5rem; }
+
+/* 4. Вход и регистрация ---------------------------------------------- */
+.auth {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(320px, 5fr) 7fr;
+}
+
+.auth__aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem;
+    background: var(--pine-dk);
+    color: #E8F2EF;
+}
+
+.auth__brand {
+    display: inline-block;
+    text-decoration: none;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.03em;
+    color: #fff;
+}
+.auth__lead {
+    max-width: 22rem;
+    margin-top: 1.25rem;
+    font-size: 1.125rem;
+    color: #BFD8D1;
+}
+
+.auth__contacts { font-size: .9375rem; color: #BFD8D1; }
+.auth__contacts p { margin: 0 0 .25rem; }
+.auth__contacts a { color: #fff; }
+
+.auth__main {
+    display: grid;
+    place-items: center;
+    padding: 3rem 1.5rem;
+}
+
+.auth__form { width: 100%; max-width: 400px; }
+.auth__form h1 { margin-bottom: .25rem; }
+.auth__form > .muted { margin-bottom: 2rem; }
+
+.auth__switch { margin-top: 1.5rem; text-align: center; color: var(--muted); }
+
+/* 5. Шапка и каркас --------------------------------------------------- */
+.topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+}
+.topbar__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: .875rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+.topbar__logo {
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: var(--pine-dk);
+    text-decoration: none;
+}
+.topbar__nav { display: flex; gap: .25rem; flex: 1; }
+.topbar__nav a {
+    padding: .5rem .875rem;
+    border-radius: var(--radius-s);
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+}
+.topbar__nav a:hover { background: var(--enamel); }
+.topbar__nav a[aria-current="page"] { background: var(--mint); color: var(--pine-dk); font-weight: 500; }
+
+.topbar__user { display: flex; align-items: center; gap: 1rem; font-size: .9375rem; }
+
+.page {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+}
+
+.page__header { margin-bottom: 2rem; }
+.page__header p { margin: 0; }
+
+.layout-aside {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2.5rem;
+    align-items: start;
+}
+/* Не даём широкой таблице растянуть колонку сетки */
+.layout-aside > * { min-width: 0; }
+
+.section { margin-bottom: 3rem; }
+.section__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.section__head h2 { margin: 0; }
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 1.5rem;
+}
+
+/* Контакты клиники в боковой колонке */
+.contacts dt { font-size: .8125rem; color: var(--muted); }
+.contacts dd { margin: 0 0 1rem; }
+.contacts dd:last-child { margin-bottom: 0; }
+
+/* 6. Талон на приём --------------------------------------------------
+   Главный акцент интерфейса: ближайший визит оформлен как бумажный
+   талон к врачу с отрывным корешком. */
+.ticket {
+    --notch: 14px;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    position: relative;
+}
+
+.ticket__body { padding: 1.75rem 2rem; }
+
+.ticket__title { font-size: .9375rem; color: var(--muted); margin-bottom: .75rem; }
+
+.ticket__date {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -.03em;
+}
+.ticket__time { color: var(--pine); }
+
+.ticket__details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .25rem 1.5rem;
+    margin: 1.5rem 0 0;
+}
+.ticket__details dt { color: var(--muted); }
+.ticket__details dd { margin: 0; font-weight: 500; }
+
+/* Отрывной корешок с перфорацией */
+.ticket__stub {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.75rem 1.5rem;
+    background: var(--sun);
+    border-left: 2px dashed var(--ink);
+}
+.ticket__stub::before,
+.ticket__stub::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--notch) * -1 - 1px);
+    width: calc(var(--notch) * 2);
+    height: calc(var(--notch) * 2);
+    border-radius: 50%;
+    background: var(--enamel);
+    border: 1px solid var(--line);
+}
+.ticket__stub::before { top: calc(var(--notch) * -1 - 1px); }
+.ticket__stub::after  { bottom: calc(var(--notch) * -1 - 1px); }
+
+.ticket__number { font-size: .875rem; }
+.ticket__number strong { display: block; font-size: 1.75rem; line-height: 1.1; }
+
+.ticket__note { margin: 0; font-size: .8125rem; line-height: 1.4; }
+
+.ticket__stub .btn--ghost { background: rgba(255, 255, 255, .55); border-color: var(--ink); color: var(--ink); }
+.ticket__stub .btn--ghost:hover { background: #fff; }
+
+/* Пустое состояние: нет будущих визитов */
+.empty {
+    padding: 2rem;
+    border: 2px dashed var(--line);
+    border-radius: var(--radius-l);
+    text-align: center;
+}
+.empty p { color: var(--muted); }
+
+/* 7. Списки визитов, таблицы, статусы --------------------------------- */
+.visit-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+
+.visit {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+}
+.visit__date { font-weight: 600; line-height: 1.3; }
+.visit__date span { display: block; }
+.visit__date span:not(.visit__day) { font-weight: 400; color: var(--muted); }
+.visit__info p { margin: 0; }
+
+.table-wrap {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+}
+.table { width: 100%; border-collapse: collapse; font-size: .9375rem; }
+.table th,
+.table td { padding: .875rem 1rem; text-align: left; border-bottom: 1px solid var(--line); }
+.table th { font-weight: 500; color: var(--muted); background: var(--enamel); white-space: nowrap; }
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover { background: #FAFCFB; }
+.table .num { text-align: right; white-space: nowrap; }
+.table .nowrap { white-space: nowrap; }
+.table--compact { font-size: .875rem; }
+.table--compact th,
+.table--compact td { padding: .75rem .75rem; }
+.table__actions { display: flex; gap: .5rem; justify-content: flex-end; }
+
+.status {
+    display: inline-block;
+    padding: .2rem .625rem;
+    border-radius: 999px;
+    font-size: .8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.status--planned   { background: #FDF1CF; color: #6B4E00; }
+.status--completed { background: var(--ok-bg); color: var(--pine-dk); }
+.status--cancelled { background: #EEF0EF; color: var(--muted); text-decoration: line-through; }
+.status--blocked   { background: var(--danger-bg); color: var(--danger); }
+.status--admin     { background: var(--pine-dk); color: #fff; }
+
+/* 8. Профиль ---------------------------------------------------------- */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2rem;
+    align-items: start;
+}
+.profile-grid .panel h2 { margin-bottom: 1.25rem; }
+.form__actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+/* 9. Запись на приём -------------------------------------------------- */
+.booking-steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+
+.booking-step {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 2.5rem 3.25rem;
+}
+.booking-step::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: -.125rem;
+    width: 2.125rem; height: 2.125rem;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    background: var(--pine);
+    color: #fff;
+    font-weight: 600;
+}
+/* Вертикальная линия, связывающая шаги */
+.booking-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 1.0625rem; top: 2.5rem; bottom: .5rem;
+    width: 2px;
+    background: var(--line);
+}
+.booking-step h2 { font-size: 1.1875rem; margin-bottom: 1rem; }
+
+/* Карточки выбора: радиокнопка скрыта, выделяется вся карточка */
+.choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .75rem; }
+
+.choice {
+    display: block;
+    position: relative;
+    padding: 1rem 1.125rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    cursor: pointer;
+}
+.choice input { position: absolute; opacity: 0; pointer-events: none; }
+.choice:hover { border-color: var(--pine); }
+.choice:has(input:checked) { border-color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); background: #F3F9F7; }
+.choice:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
+.choice__title { display: block; font-weight: 600; }
+.choice__meta { display: block; margin-top: .25rem; font-size: .875rem; color: var(--muted); }
+.choice__price { display: block; margin-top: .5rem; font-weight: 600; color: var(--pine-dk); }
+
+/* Даты и время */
+.dates { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .5rem; }
+.slot {
+    position: relative;
+    flex: 0 0 auto;
+    min-width: 4.5rem;
+    padding: .5rem .75rem;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+}
+.slot input { position: absolute; opacity: 0; pointer-events: none; }
+.slot small:empty,
+.choice__price:empty { display: none; }
+.slot small { display: block; font-size: .75rem; color: var(--muted); }
+.slot:hover { border-color: var(--pine); }
+.slot:has(input:checked) { background: var(--pine); border-color: var(--pine); color: #fff; }
+.slot:has(input:checked) small { color: #CFE5DF; }
+.slot:has(input:focus-visible) { outline: 3px solid var(--sun); outline-offset: 2px; }
+.slot:has(input:disabled) { cursor: not-allowed; color: #A9B7B4; background: var(--enamel); text-decoration: line-through; }
+
+.fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+
+.times { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: .5rem; margin-top: 1rem; }
+
+/* Итог записи */
+.summary { position: sticky; top: 1.5rem; }
+.summary dl { margin: 0 0 1.5rem; }
+.summary dt { font-size: .8125rem; color: var(--muted); }
+.summary dd { margin: 0 0 .875rem; font-weight: 500; }
+.summary__total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+    margin-bottom: 1.25rem;
+    border-top: 1px solid var(--line);
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+/* 10. Панель администратора ------------------------------------------- */
+.admin {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+}
+
+.admin__sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    background: var(--pine-dk);
+    color: #E8F2EF;
+}
+.admin__logo { padding: 0 .75rem; font-size: 1.375rem; font-weight: 700; color: #fff; }
+.admin__role { padding: 0 .75rem; margin-bottom: 2rem; font-size: .875rem; color: #9FC2B8; }
+
+.admin__nav { display: grid; gap: .125rem; }
+.admin__nav a {
+    padding: .625rem .75rem;
+    border-radius: var(--radius-s);
+    color: #D4E6E1;
+    text-decoration: none;
+}
+.admin__nav a:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.admin__nav a[aria-current="page"] { background: var(--sun); color: var(--ink); font-weight: 500; }
+
+.admin__logout { margin-top: auto; padding: .625rem .75rem; color: #D4E6E1; }
+.admin__logout:hover { color: #fff; }
+
+.admin__main { padding: 2rem 2.5rem 4rem; min-width: 0; }
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: end;
+    margin-bottom: 1.25rem;
+}
+.toolbar .field { min-width: 200px; }
+.toolbar .field--grow { flex: 1; }
+.toolbar .btn { margin-left: auto; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.stat { padding: 1.125rem 1.25rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); }
+.stat__value { font-size: 1.75rem; font-weight: 700; line-height: 1.1; }
+.stat__label { display: block; font-size: .875rem; color: var(--muted); }
+.stat__value { display: block; }
+
+/* Карточка-кнопка «Ожидают отметки» */
+.stat--link { font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.stat--link:hover { border-color: var(--pine); }
+
+.table-count { margin-top: .75rem; font-size: .875rem; }
+
+/* Вторая строка в ячейке: телефон, описание, комментарий */
+.cell-sub { display: block; margin-top: .125rem; font-size: .8125rem; color: var(--muted); }
+
+.table__empty { padding: 2rem 1rem !important; text-align: center !important; color: var(--muted); }
+
+.status--overdue { background: #FBE3C9; color: #7A3E00; }
+
+/* Список флажков (услуги врача) */
+.field__legend { margin-bottom: .5rem; padding: 0; font-weight: 500; font-size: .9375rem; }
+.checklist { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 1rem; }
+
+/* Расписание */
+.schedule { max-width: 720px; display: grid; gap: 1.25rem; }
+.schedule__doctor { max-width: 380px; }
+.schedule__table input[type="time"] {
+    height: 2.5rem;
+    padding: .375rem .625rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    font: inherit;
+}
+.schedule__table input[type="checkbox"] { width: 1.125rem; height: 1.125rem; accent-color: var(--pine); }
+.schedule__table tr.is-off td { color: var(--muted); }
+.schedule__table tr.is-off input[type="time"] { opacity: .4; }
+
+.clinic-form { max-width: 720px; }
+
+.pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: .9375rem; }
+
+/* Модальное окно редактирования (элемент <dialog>) */
+.modal {
+    width: min(520px, calc(100% - 2rem));
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-l);
+    color: var(--ink);
+}
+.modal > form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: calc(100vh - 2rem);
+}
+.modal__body { overflow-y: auto; }
+.modal::backdrop { background: rgba(22, 48, 46, .45); }
+.modal__body { padding: 1.75rem; }
+.modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: .75rem;
+    padding: 1rem 1.75rem;
+    background: var(--enamel);
+}
+
+/* 10а. Главная страница --------------------------------------------- */
+.btn--large { padding: .9rem 1.5rem; font-size: 1.0625rem; }
+.btn--sun { background: var(--sun); color: var(--ink); }
+.btn--sun:hover { background: #F7D67F; color: var(--ink); }
+
+.topbar__phone { color: var(--ink); font-weight: 500; text-decoration: none; white-space: nowrap; }
+.topbar__phone:hover { color: var(--pine); }
+
+.home .topbar { position: sticky; top: 0; z-index: 10; }
+.home section[id] { scroll-margin-top: 4.5rem; }   /* якорь не прячется под шапкой */
+
+/* Первый экран: крупный заголовок слева, талон справа */
+.hero { padding: clamp(3rem, 8vw, 6rem) 1.5rem clamp(3rem, 7vw, 5rem); }
+.hero__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+.hero__title {
+    margin-bottom: 1.25rem;
+    font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -.035em;
+    color: var(--pine-dk);
+}
+.hero__lead { max-width: 34rem; margin-bottom: 2rem; font-size: 1.1875rem; color: var(--muted); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* Талон слегка повёрнут, как положенный на стол бумажный */
+.hero__ticket {
+    grid-template-columns: minmax(0, 1fr) 170px;
+    transform: rotate(-2.5deg);
+    box-shadow: 0 18px 40px -18px rgba(19, 76, 67, .35);
+    animation: ticket-in .7s cubic-bezier(.2, .8, .2, 1) both;
+}
+.hero__ticket .ticket__date { font-size: clamp(1.875rem, 3.2vw, 2.5rem); }
+.hero__ticket .ticket__number strong { font-size: 1.375rem; }
+
+@keyframes ticket-in {
+    from { opacity: 0; transform: translateY(24px) rotate(-6deg); }
+    to   { opacity: 1; transform: rotate(-2.5deg); }
+}
+
+/* Блоки главной */
+.home-block { padding: clamp(3rem, 6vw, 4.5rem) 1.5rem; }
+.home-block--surface { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.home-block__inner { max-width: var(--page-width); margin: 0 auto; }
+.home-block__head { max-width: 40rem; margin-bottom: 2rem; }
+.home-block__head p { margin: 0; }
+.home-block__title { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -.025em; margin-bottom: .5rem; }
+
+/* «Как записаться» — настоящая последовательность, поэтому с номерами */
+.how {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    counter-reset: how;
+}
+.how__step { counter-increment: how; padding-top: 1rem; border-top: 2px solid var(--pine); }
+.how__step::before {
+    content: counter(how);
+    display: block;
+    margin-bottom: .5rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--pine);
+}
+.how__step h3 { font-size: 1.125rem; }
+.how__step p { margin: 0; color: var(--muted); }
+
+/* Прейскурант */
+.price-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.price-row {
+    display: grid;
+    grid-template-columns: 1fr 8rem 8rem;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1.125rem 0;
+    border-bottom: 1px solid var(--line);
+}
+.price-row__name { margin: 0; font-size: 1.0625rem; }
+.price-row__description { margin: .25rem 0 0; font-size: .9375rem; color: var(--muted); }
+.price-row__duration { color: var(--muted); white-space: nowrap; }
+.price-row__price {
+    text-align: right;
+    font-size: 1.125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    color: var(--pine-dk);
+}
+
+/* Врачи */
+.doctors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.doctor-card {
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--pine);
+    border-radius: var(--radius-s);
+}
+.doctor-card h3 { margin-bottom: .25rem; font-size: 1.125rem; }
+.doctor-card p { margin: 0 0 .75rem; }
+.doctor-card p:last-child { margin-bottom: 0; }
+.doctor-card__specialty { font-weight: 500; color: var(--pine); }
+.doctor-card__services { font-size: .875rem; color: var(--muted); }
+
+/* Контакты на тёмном фоне */
+.contacts-band { padding: clamp(3rem, 6vw, 4.5rem) 1.5rem; background: var(--pine-dk); color: #E8F2EF; }
+.contacts-band__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: end;
+}
+.contacts-band .home-block__title { color: #fff; margin-bottom: 1.5rem; }
+.contacts-band__list { display: grid; grid-template-columns: auto 1fr; gap: .625rem 2rem; margin: 0; }
+.contacts-band__list dt { color: #9FC2B8; }
+.contacts-band__list dd { margin: 0; color: #fff; }
+.contacts-band__list a { color: #fff; }
+.contacts-band__cta p { max-width: 26rem; font-size: 1.125rem; color: #BFD8D1; }
+
+.site-footer { padding: 1.5rem; font-size: .875rem; color: var(--muted); }
+.site-footer__inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .5rem 1.5rem;
+}
+.site-footer a { color: var(--muted); }
+
+/* 11. Адаптивность ---------------------------------------------------- */
+@media (max-width: 900px) {
+    .layout-aside,
+    .profile-grid { grid-template-columns: 1fr; }
+    .summary { position: static; }
+    .stats { grid-template-columns: 1fr; }
+
+    .admin { grid-template-columns: 1fr; }
+    .admin__sidebar { flex-direction: row; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; }
+    .admin__role { display: none; }
+    .admin__nav { display: flex; flex-wrap: wrap; }
+    .admin__logout { margin: 0 0 0 auto; }
+    .admin__main { padding: 1.5rem 1rem 3rem; }
+}
+
+@media (max-width: 900px) {
+    .hero__inner,
+    .contacts-band__inner { grid-template-columns: 1fr; }
+    .hero__ticket { max-width: 520px; }
+    .how { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+@media (max-width: 720px) {
+    h1 { font-size: 1.625rem; }
+    .hero__title { font-size: 2.375rem; }
+    .topbar__phone { display: none; }
+    .price-row { grid-template-columns: 1fr auto; gap: .25rem 1rem; }
+    .price-row__duration { grid-column: 1; grid-row: 2; font-size: .875rem; }
+    .price-row__price { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+
+    .auth { grid-template-columns: 1fr; }
+    .auth__aside { padding: 2rem 1.5rem; gap: 1.5rem; }
+    .auth__contacts { display: none; }
+
+    .topbar__inner { flex-wrap: wrap; gap: .75rem 1rem; }
+    .topbar__nav { order: 3; flex-basis: 100%; overflow-x: auto; }
+
+    .ticket { grid-template-columns: 1fr; }
+    .ticket__stub { border-left: 0; border-top: 2px dashed var(--ink); flex-direction: row; align-items: center; }
+    .ticket__stub::before,
+    .ticket__stub::after { top: calc(var(--notch) * -1 - 1px); bottom: auto; }
+    .ticket__stub::before { left: calc(var(--notch) * -1 - 1px); }
+    .ticket__stub::after  { left: auto; right: calc(var(--notch) * -1 - 1px); }
+
+    .visit { grid-template-columns: 1fr; gap: .5rem; }
+    .field-row { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    .hero__ticket { animation: none; }
+}
+
+/* Кнопка удаления в окне прижата влево, остальные — вправо */
+.modal__footer .btn--danger { margin-right: auto; }

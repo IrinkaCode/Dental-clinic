@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Стоматологическая клиника «АС Дент» — запись онлайн</title>
+    <meta name="description" content="Стоматологическая клиника «АС Дент»: лечение, гигиена, хирургия и ортодонтия. Цены на услуги, врачи и онлайн-запись на приём.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="home">
+<header class="topbar">
+    <div class="topbar__inner">
+        <a href="index.html" class="topbar__logo">АС Дент</a>
+        <nav class="topbar__nav" aria-label="Разделы страницы">
+            <a href="#prices">Услуги и цены</a>
+            <a href="#doctors">Врачи</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+        <div class="topbar__user">
+            <a class="topbar__phone" data-clinic-phone></a>
+            <a href="login.html" class="btn btn--ghost btn--small" id="account-link">Войти</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__inner">
+            <div class="hero__text">
+                <h1 class="hero__title" id="hero-title">Запишитесь к&nbsp;стоматологу онлайн</h1>
+                <p class="hero__lead">Выберите услугу, врача и свободное время — без звонков и ожидания на линии. Все визиты и история лечения хранятся в личном кабинете.</p>
+                <div class="hero__actions">
+                    <a href="booking.html" class="btn btn--primary btn--large" data-booking-link>Записаться на приём</a>
+                    <a href="#prices" class="btn btn--ghost btn--large">Посмотреть цены</a>
+                </div>
+            </div>
+
+            <article class="ticket hero__ticket" aria-label="Как устроена онлайн-запись">
+                <div class="ticket__body">
+                    <div class="ticket__title">Онлайн-запись</div>
+                    <div class="ticket__date">Круглосуточно</div>
+                    <dl class="ticket__details">
+                        <dt>Врач</dt>   <dd>выбираете сами</dd>
+                        <dt>Время</dt>  <dd>только свободное, по расписанию</dd>
+                        <dt>Отмена</dt> <dd>в личном кабинете</dd>
+                    </dl>
+                </div>
+                <div class="ticket__stub">
+                    <div class="ticket__number">Талон<strong>на приём</strong></div>
+                    <a href="booking.html" class="btn btn--ghost btn--small" data-booking-link>Получить</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="home-block" aria-labelledby="how-title">
+        <div class="home-block__inner">
+            <h2 class="home-block__title" id="how-title">Как записаться</h2>
+            <ol class="how">
+                <li class="how__step">
+                    <h3>Войдите или зарегистрируйтесь</h3>
+                    <p>Понадобятся ФИО, email и телефон. Данные хранятся в зашифрованном виде.</p>
+                </li>
+                <li class="how__step">
+                    <h3>Выберите услугу, врача и время</h3>
+                    <p>Свободное время видно сразу — на две недели вперёд.</p>
+                </li>
+                <li class="how__step">
+                    <h3>Приходите в назначенный час</h3>
+                    <p>Если планы изменились, отмените запись в личном кабинете.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="home-block home-block--surface" id="prices" aria-labelledby="prices-title">
+        <div class="home-block__inner">
+            <div class="home-block__head">
+                <h2 class="home-block__title" id="prices-title">Услуги и цены</h2>
+                <p class="muted">Цена указана за одну процедуру. Окончательный план лечения врач составляет после осмотра.</p>
+            </div>
+            <p class="muted" id="prices-status">Загружаем услуги…</p>
+            <ul class="price-list" id="price-list"></ul>
+        </div>
+    </section>
+
+    <section class="home-block" id="doctors" aria-labelledby="doctors-title">
+        <div class="home-block__inner">
+            <div class="home-block__head">
+                <h2 class="home-block__title" id="doctors-title">Врачи</h2>
+                <p class="muted">К любому из врачей можно записаться онлайн.</p>
+            </div>
+            <p class="muted" id="doctors-status">Загружаем врачей…</p>
+            <div class="doctors-grid" id="doctors-list"></div>
+        </div>
+    </section>
+
+    <section class="contacts-band" id="contacts" aria-labelledby="contacts-title">
+        <div class="contacts-band__inner">
+            <div>
+                <h2 class="home-block__title" id="contacts-title">Контакты</h2>
+                <dl class="contacts-band__list">
+                    <dt>Адрес</dt>        <dd data-clinic="address">—</dd>
+                    <dt>Телефон</dt>      <dd><a data-clinic="phone">—</a></dd>
+                    <dt>Email</dt>        <dd><a data-clinic="email">—</a></dd>
+                    <dt>Часы работы</dt>  <dd data-clinic="working_hours">—</dd>
+                </dl>
+            </div>
+            <div class="contacts-band__cta">
+                <p>Онлайн-запись работает круглосуточно. По телефону — в часы работы клиники.</p>
+                <a href="booking.html" class="btn btn--sun btn--large" data-booking-link>Записаться на приём</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer__inner">
+        <span data-clinic="name">Стоматологическая клиника «АС Дент»</span>
+        <a href="login.html">Вход для пациентов и сотрудников</a>
+    </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

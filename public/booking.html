@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Запись на приём — клиника «АС Дент»</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-require-role="patient">
+<header class="topbar">
+    <div class="topbar__inner">
+        <a href="cabinet.html" class="topbar__logo">АС Дент</a>
+        <nav class="topbar__nav" aria-label="Основное меню">
+            <a href="cabinet.html">Мои визиты</a>
+            <a href="booking.html" aria-current="page">Записаться</a>
+            <a href="profile.html">Мои данные</a>
+        </nav>
+        <div class="topbar__user">
+            <span id="user-name" data-user-name>Иванова Анна</span>
+            <a href="index.html" id="logout" data-logout>Выйти</a>
+        </div>
+    </div>
+</header>
+
+<main class="page">
+    <div class="page__header">
+        <h1>Запись на приём</h1>
+        <p class="muted">Выберите услугу, врача и удобное время.</p>
+    </div>
+
+    <form id="booking-form" class="layout-aside" novalidate>
+        <ol class="booking-steps">
+            <li class="booking-step">
+                <h2>Услуга</h2>
+                <p class="muted" id="service-hint">Загружаем услуги…</p>
+                <div class="choices" id="service-list"></div>
+            </li>
+
+            <li class="booking-step">
+                <h2>Врач</h2>
+                <p class="muted" id="doctor-hint">Сначала выберите услугу.</p>
+                <div class="choices" id="doctor-list"></div>
+            </li>
+
+            <li class="booking-step">
+                <h2>Дата и время</h2>
+                <p class="muted" id="date-hint">Сначала выберите врача.</p>
+                <fieldset class="fieldset">
+                    <legend class="visually-hidden">Дата</legend>
+                    <div class="dates" id="date-list"></div>
+                </fieldset>
+                <fieldset class="fieldset">
+                    <legend class="visually-hidden">Время</legend>
+                    <div class="times" id="time-list"></div>
+                </fieldset>
+            </li>
+
+            <li class="booking-step">
+                <h2>Комментарий для врача</h2>
+                <div class="field">
+                    <label for="comment" class="visually-hidden">Комментарий</label>
+                    <textarea id="comment" name="comment" rows="3" maxlength="500"
+                              placeholder="Например: болит зуб справа внизу при холодном"></textarea>
+                    <span class="field__hint">Необязательно, до 500 символов.</span>
+                </div>
+            </li>
+        </ol>
+
+        <aside class="panel summary" aria-labelledby="summary-title">
+            <h2 id="summary-title">Ваша запись</h2>
+            <dl>
+                <dt>Услуга</dt>
+                <dd id="summary-service">—</dd>
+                <dt>Врач</dt>
+                <dd id="summary-doctor">—</dd>
+                <dt>Дата и время</dt>
+                <dd id="summary-datetime">—</dd>
+            </dl>
+            <div class="summary__total"><span>Стоимость</span><span id="summary-price">—</span></div>
+
+            <div class="alert alert--error" id="booking-error" role="alert" hidden></div>
+            <button type="submit" class="btn btn--primary btn--block" id="booking-submit" disabled>Записаться</button>
+        </aside>
+    </form>
+</main>
+
+<!-- Шаблоны. booking.js копирует и заполняет их данными с сервера -->
+<template id="choice-template">
+    <label class="choice">
+        <input type="radio">
+        <span class="choice__title" data-field="title"></span>
+        <span class="choice__meta" data-field="meta"></span>
+        <span class="choice__price" data-field="price"></span>
+    </label>
+</template>
+
+<template id="slot-template">
+    <label class="slot">
+        <input type="radio">
+        <span data-field="label"></span>
+        <small data-field="sub"></small>
+    </label>
+</template>
+<script src="js/api.js"></script>
+<script src="js/session.js"></script>
+<script src="js/booking.js"></script>
+</body>
+</html>

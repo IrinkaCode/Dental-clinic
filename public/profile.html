@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мои данные — клиника «АС Дент»</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-require-role="patient">
+<header class="topbar">
+    <div class="topbar__inner">
+        <a href="cabinet.html" class="topbar__logo">АС Дент</a>
+        <nav class="topbar__nav" aria-label="Основное меню">
+            <a href="cabinet.html">Мои визиты</a>
+            <a href="booking.html">Записаться</a>
+            <a href="profile.html" aria-current="page">Мои данные</a>
+        </nav>
+        <div class="topbar__user">
+            <span id="user-name" data-user-name>Иванова Анна</span>
+            <a href="index.html" id="logout" data-logout>Выйти</a>
+        </div>
+    </div>
+</header>
+
+<main class="page">
+    <div class="page__header">
+        <h1>Мои данные</h1>
+        <p class="muted">Эти данные видят только вы и администратор клиники.</p>
+    </div>
+
+    <div class="profile-grid">
+        <section class="panel" aria-labelledby="personal-title">
+            <h2 id="personal-title">Личная информация</h2>
+
+            <form class="form" id="profile-form" novalidate>
+                <div class="alert alert--success" id="profile-success" role="status" hidden>Изменения сохранены.</div>
+                <div class="alert alert--error" id="profile-error" role="alert" hidden></div>
+
+                <div class="field">
+                    <label for="full_name">ФИО</label>
+                    <input type="text" id="full_name" name="full_name" autocomplete="name" required>
+                    <span class="field__error" data-error-for="full_name"></span>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
+                    <span class="field__hint">Используется для входа в кабинет.</span>
+                    <span class="field__error" data-error-for="email"></span>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+                        <span class="field__error" data-error-for="phone"></span>
+                    </div>
+                    <div class="field">
+                        <label for="birth_date">Дата рождения</label>
+                        <input type="date" id="birth_date" name="birth_date" autocomplete="bday">
+                        <span class="field__error" data-error-for="birth_date"></span>
+                    </div>
+                </div>
+
+                <div class="form__actions">
+                    <button type="submit" class="btn btn--primary">Сохранить изменения</button>
+                    <button type="button" class="btn btn--ghost" id="profile-reset">Отменить</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel" aria-labelledby="password-title">
+            <h2 id="password-title">Смена пароля</h2>
+
+            <form class="form" id="password-form" novalidate>
+                <div class="alert alert--success" id="password-success" role="status" hidden>Пароль изменён.</div>
+                <div class="alert alert--error" id="password-error" role="alert" hidden></div>
+
+                <div class="field">
+                    <label for="current_password">Текущий пароль</label>
+                    <input type="password" id="current_password" name="current_password" autocomplete="current-password" required>
+                    <span class="field__error" data-error-for="current_password"></span>
+                </div>
+
+                <div class="field">
+                    <label for="new_password">Новый пароль</label>
+                    <input type="password" id="new_password" name="new_password" autocomplete="new-password" required minlength="8">
+                    <span class="field__hint">Не менее 8 символов, буквы и цифры.</span>
+                    <span class="field__error" data-error-for="new_password"></span>
+                </div>
+
+                <div class="field">
+                    <label for="new_password_confirm">Повторите новый пароль</label>
+                    <input type="password" id="new_password_confirm" name="new_password_confirm" autocomplete="new-password" required>
+                    <span class="field__error" data-error-for="new_password_confirm"></span>
+                </div>
+
+                <div class="form__actions">
+                    <button type="submit" class="btn btn--primary">Сменить пароль</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/session.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>

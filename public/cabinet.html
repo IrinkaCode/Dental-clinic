@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мои визиты — клиника «АС Дент»</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-require-role="patient">
+<header class="topbar">
+    <div class="topbar__inner">
+        <a href="cabinet.html" class="topbar__logo">АС Дент</a>
+        <nav class="topbar__nav" aria-label="Основное меню">
+            <a href="cabinet.html" aria-current="page">Мои визиты</a>
+            <a href="booking.html">Записаться</a>
+            <a href="profile.html">Мои данные</a>
+        </nav>
+        <div class="topbar__user">
+            <span id="user-name" data-user-name>Иванова Анна</span>
+            <a href="index.html" id="logout" data-logout>Выйти</a>
+        </div>
+    </div>
+</header>
+
+<main class="page">
+    <div class="page__header">
+        <h1 id="greeting">Здравствуйте</h1>
+        <p class="muted">Ваши записи на приём и история посещений клиники.</p>
+    </div>
+
+    <div class="alert alert--success" id="page-success" role="status" hidden></div>
+    <div class="alert alert--error" id="page-alert" role="alert" hidden></div>
+
+    <div class="layout-aside">
+        <div>
+            <!-- Ближайший приём -->
+            <section class="section" aria-labelledby="next-title">
+                <h2 id="next-title" class="visually-hidden">Ближайший приём</h2>
+
+                <article class="ticket" id="next-visit" hidden>
+                    <div class="ticket__body">
+                        <div class="ticket__title">Ближайший приём</div>
+                        <div class="ticket__date">
+                            <span data-field="date"></span><br>
+                            <span class="ticket__time" data-field="time"></span>
+                        </div>
+                        <dl class="ticket__details">
+                            <dt>Врач</dt>         <dd data-field="doctor"></dd>
+                            <dt>Услуга</dt>       <dd data-field="service"></dd>
+                            <dt>Длительность</dt> <dd data-field="duration"></dd>
+                        </dl>
+                    </div>
+                    <div class="ticket__stub">
+                        <div class="ticket__number">Талон<strong data-field="number"></strong></div>
+                        <button type="button" class="btn btn--ghost btn--small" data-cancel-id="">Отменить запись</button>
+                        <p class="ticket__note" id="ticket-phone-note" hidden>До приёма меньше 2 ч — отменить можно по телефону клиники.</p>
+                    </div>
+                </article>
+
+                <div class="empty" id="no-visits" hidden>
+                    <p>У вас нет запланированных приёмов.</p>
+                    <a href="booking.html" class="btn btn--primary">Записаться на приём</a>
+                </div>
+            </section>
+
+            <section class="section" id="upcoming-section" aria-labelledby="upcoming-title" hidden>
+                <div class="section__head">
+                    <h2 id="upcoming-title">Другие запланированные визиты</h2>
+                    <a href="booking.html">Новая запись</a>
+                </div>
+                <ul class="visit-list" id="upcoming-list"></ul>
+            </section>
+
+            <section class="section" aria-labelledby="history-title">
+                <div class="section__head">
+                    <h2 id="history-title">История посещений</h2>
+                </div>
+                <p class="muted" id="history-empty" hidden>Здесь появятся прошедшие визиты.</p>
+                <div class="table-wrap">
+                    <table class="table table--compact">
+                        <thead>
+                        <tr>
+                            <th scope="col">Дата</th>
+                            <th scope="col">Услуга</th>
+                            <th scope="col">Врач</th>
+                            <th scope="col">Статус</th>
+                            <th scope="col" class="num">Стоимость</th>
+                        </tr>
+                        </thead>
+                        <tbody id="history-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <aside class="panel" aria-labelledby="contacts-title">
+            <h2 id="contacts-title">Контакты клиники</h2>
+            <dl class="contacts">
+                <dt>Адрес</dt>
+                <dd data-clinic="address"></dd>
+                <dt>Телефон</dt>
+                <dd><a data-clinic="phone"></a></dd>
+                <dt>Email</dt>
+                <dd><a data-clinic="email"></a></dd>
+                <dt>Часы работы</dt>
+                <dd data-clinic="working_hours"></dd>
+            </dl>
+            <p class="muted">Через сайт запись можно отменить не позднее чем за <span id="cancel-hours">2</span> ч до приёма. Позже — по телефону.</p>
+        </aside>
+    </div>
+</main>
+
+<!-- Шаблоны строк -->
+<template id="visit-template">
+    <li class="visit">
+        <div class="visit__date"><span class="visit__day" data-field="date"></span><span data-field="weekday-time"></span></div>
+        <div class="visit__info">
+            <p><strong data-field="service"></strong></p>
+            <p class="muted" data-field="doctor"></p>
+        </div>
+        <button type="button" class="btn btn--danger btn--small" data-cancel-id="">Отменить</button>
+    </li>
+</template>
+
+<template id="history-template">
+    <tr>
+        <td class="nowrap" data-field="date"></td>
+        <td data-field="service"></td>
+        <td class="nowrap" data-field="doctor"></td>
+        <td><span class="status" data-field="status"></span></td>
+        <td class="num" data-field="price"></td>
+    </tr>
+</template>
+<script src="js/api.js"></script>
+<script src="js/session.js"></script>
+<script src="js/cabinet.js"></script>
+</body>
+</html>

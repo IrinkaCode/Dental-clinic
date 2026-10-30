@@ -16,7 +16,6 @@
             <span class="admin__logo-plate"><img src="img/logo-wordmark.svg" alt="АС Дент" width="627" height="104"></span>
         </div>
         <div class="admin__role">Панель администратора</div>
-        <!-- Разделы переключаются по адресу: admin.html#users и т. д. -->
         <nav class="admin__nav" aria-label="Разделы">
             <a href="#appointments">Записи</a>
             <a href="#users">Пользователи</a>
@@ -160,6 +159,7 @@
                 <table class="table table--compact">
                     <thead>
                     <tr>
+                        <th scope="col"><span class="visually-hidden">Фото</span></th>
                         <th scope="col">ФИО</th>
                         <th scope="col">Специальность</th>
                         <th scope="col">Услуги</th>
@@ -417,6 +417,19 @@
             <h2 id="doctor-dialog-title">Врач</h2>
             <div class="alert alert--error" role="alert" hidden></div>
             <input type="hidden" name="id">
+
+            <div class="field">
+                <label>Фото</label>
+                <div class="photo-upload">
+                    <div class="photo-upload__preview" id="doctor-photo-preview" aria-hidden="true"></div>
+                    <div class="photo-upload__actions">
+                        <input type="file" id="doctor-photo-file" accept="image/jpeg,image/png,image/webp" class="visually-hidden">
+                        <button type="button" class="btn btn--ghost btn--small" id="doctor-photo-choose" disabled>Выбрать фото</button>
+                        <button type="button" class="btn btn--ghost btn--small" id="doctor-photo-remove" hidden>Удалить фото</button>
+                        <p class="field__hint" id="doctor-photo-hint">Фото можно добавить после первого сохранения врача.</p>
+                    </div>
+                </div>
+            </div>
 
             <div class="field">
                 <label for="d-name">ФИО</label>

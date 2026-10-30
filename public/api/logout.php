@@ -1,6 +1,6 @@
 <?php
 /**
- * POST api/logout.php — выход.
+ * Выход
  */
 
 declare(strict_types=1);

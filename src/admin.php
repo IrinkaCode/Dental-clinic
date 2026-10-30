@@ -1,6 +1,6 @@
 <?php
 /**
- * Общие функции панели администратора (обработчики в public/api/admin/).
+ * Общие функции панели администратора
  */
 
 declare(strict_types=1);
@@ -11,7 +11,6 @@ const APPOINTMENT_STATUSES = ['planned', 'completed', 'cancelled'];
 
 /**
  * Первая строка каждого обработчика админки после bootstrap:
- * только администратор, только GET (чтение) и POST (изменения, с CSRF-токеном).
  */
 function adminStart(): array
 {
@@ -53,7 +52,6 @@ function isValidTime(string $time): bool
     return (bool)preg_match('/^([01]\d|2[0-3]):[0-5]\d$/', $time);
 }
 
-/** Есть ли строка $query в одном из значений (без учёта регистра; телефоны — по цифрам). */
 function textMatches(string $query, array $values): bool
 {
     $query = mb_strtolower(trim($query));
@@ -84,7 +82,7 @@ function otherActiveAdmins(int $exceptId): int
     return (int)$stmt->fetchColumn();
 }
 
-/** Помещается ли приём [$start, $end) в рабочие часы врача в этот день недели. */
+/** Помещается ли приём в рабочие часы врача в этот день недели. */
 function fitsSchedule(int $doctorId, string $start, string $end): bool
 {
     $stmt = db()->prepare('SELECT time_start, time_end FROM doctor_schedule WHERE doctor_id = ? AND weekday = ?');
@@ -101,8 +99,6 @@ function fitsSchedule(int $doctorId, string $start, string $end): bool
 
 /**
  * Проверка данных записи, которую создаёт или изменяет администратор.
- * В отличие от записи пациентом, можно указать прошедшее время
- * (например, внести визит задним числом), но не время вне расписания врача.
  */
 function validateAppointment(array $input): array
 {

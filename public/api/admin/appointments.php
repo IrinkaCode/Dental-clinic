@@ -1,10 +1,6 @@
 <?php
 /**
- * Записи на приём (только администратор).
- *
- * GET  api/admin/appointments.php?date_from=&date_to=&doctor_id=&status=&q=
- *      status: planned | completed | cancelled | overdue (прошедшие, но не отмеченные)
- * POST api/admin/appointments.php  {action: 'create' | 'update' | 'status' | 'delete', ...}
+ * Записи на приём (только администратор)
  */
 
 declare(strict_types=1);

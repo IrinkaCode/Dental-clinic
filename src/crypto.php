@@ -1,16 +1,6 @@
 <?php
 /**
- * Криптографические функции приложения.
- *
- *  encrypt() / decrypt()  — шифрование персональных данных алгоритмом
- *                           XSalsa20-Poly1305 (libsodium, secretbox). Без ключа
- *                           данные нельзя ни прочитать, ни незаметно изменить.
- *  emailHash()            — HMAC-SHA256 от email. Позволяет найти пользователя
- *                           по email при входе, не храня email в открытом виде.
- *  hashPassword() / verifyPassword() — односторонний хеш пароля (Argon2id или bcrypt).
- *
- * Ключи хранятся в config/config.php — вне папки public и вне базы данных.
- * Файл создаётся скриптом install.php.
+ * Криптографические функции приложения
  */
 
 declare(strict_types=1);
@@ -47,8 +37,7 @@ function cryptoKeys(): array
 
 /**
  * Шифрует строку. Для каждого значения генерируется случайный nonce,
- * поэтому одинаковые данные дают разный шифротекст.
- * Результат: "v1:" + base64(nonce + шифротекст).
+ * поэтому одинаковые данные дают разный шифротекст
  */
 function encrypt(?string $plain): ?string
 {
@@ -101,7 +90,6 @@ function normalizeEmail(string $email): string
 /**
  * «Слепой индекс» email: HMAC-SHA256 с секретным ключом.
  * Одинаковый email всегда даёт одинаковый хеш, поэтому по нему можно искать:
- *   SELECT * FROM users WHERE email_hash = :hash
  * Без ключа восстановить email по хешу нельзя (в отличие от обычного SHA-256).
  */
 function emailHash(string $email): string
@@ -136,7 +124,7 @@ function passwordNeedsRehash(string $hash): bool
     return password_needs_rehash($hash, passwordAlgorithm());
 }
 
-/** Генерирует новые ключи шифрования (используется в install.php). */
+/** Генерирует новые ключи шифрования */
 function generateCryptoKeys(): array
 {
     return [

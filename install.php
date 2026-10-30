@@ -1,9 +1,6 @@
 <?php
 /**
  * Первичная установка приложения. Запускать из корня проекта:
- *
- *   php install.php          — создать ключи, базу данных и администратора
- *   php install.php --demo   — то же + демо-пациент с историей и будущими записями
  */
 
 declare(strict_types=1);
@@ -20,7 +17,7 @@ foreach (['pdo_sqlite', 'sodium'] as $ext) {
     }
 }
 
-require __DIR__ . '/src/users.php';   // подключает также config.php, crypto.php и db.php
+require __DIR__ . '/src/users.php';
 
 $configFile = __DIR__ . '/config/config.php';
 $schemaFile = __DIR__ . '/database/schema.sql';
@@ -47,14 +44,14 @@ if (!is_file($configFile)) {
              . "// debug: true — подробный текст ошибок в ответах API (только для разработки).\n"
              . "//        На хостинге обязательно false: ошибки пишутся в logs/php-error.log.\n"
              . "// timezone: часовой пояс клиники.\n"
-             . 'return ' . var_export(generateCryptoKeys() + ['debug' => false, 'timezone' => 'Europe/Moscow'], true) . ";\n";
+             . 'return ' . var_export(generateCryptoKeys() + ['debug' => false, 'timezone' => 'Europe/Kaliningrad'], true) . ";\n";
     file_put_contents($configFile, $content);
     echo "[OK] Созданы ключи шифрования: config/config.php\n";
 } else {
     echo "[OK] Используются существующие ключи: config/config.php\n";
 }
 
-date_default_timezone_set((string)config('timezone', 'Europe/Moscow'));
+date_default_timezone_set((string)config('timezone', 'Europe/Kaliningrad'));
 
 // ---------------------------------------------------------------------
 // 2. База данных
@@ -80,7 +77,7 @@ function ask(string $question, string $default = ''): string
     return $line === '' ? $default : $line;
 }
 
-/** Ближайший рабочий день (пн–пт), сдвинутый на $days дней от сегодня. */
+/** Ближайший рабочий день (пн–пт) */
 function workday(int $days): string
 {
     $date = new DateTime("today $days days");
@@ -126,7 +123,7 @@ if ($generated) {
 }
 
 // ---------------------------------------------------------------------
-// 4. Демо-пациент (по флагу --demo)
+// 4. Демо-пациент
 // ---------------------------------------------------------------------
 if ($withDemo) {
     $patientId = createUser([

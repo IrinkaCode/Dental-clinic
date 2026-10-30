@@ -1,16 +1,12 @@
 /**
- * Личный кабинет (cabinet.html): ближайший приём, запланированные визиты,
- * история посещений, контакты клиники, отмена записи.
- *
- * Данные вставляются через textContent, а не innerHTML:
- * так текст из базы не может выполниться как HTML-код (защита от XSS).
+ * Личный кабинет: ближайший приём, запланированные визиты,
+ * история посещений, контакты клиники, отмена записи
  */
 'use strict';
 
 document.addEventListener('user:ready', (event) => {
     showGreeting(event.detail);
 
-    // После записи booking.js открывает cabinet.html?booked=1
     if (new URLSearchParams(location.search).has('booked')) {
         ui.showAlert(document.getElementById('page-success'), 'Вы записаны на приём. Ждём вас!');
         history.replaceState(null, '', 'cabinet.html');
@@ -152,7 +148,6 @@ async function cancelAppointment(button) {
     }
 }
 
-/** Записывает текст в элемент с data-field="name" внутри root. */
 function setField(root, name, value) {
     const el = root.querySelector(`[data-field="${name}"]`);
     if (el) {

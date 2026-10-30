@@ -1,7 +1,6 @@
 <?php
 /**
- * Чтение настроек из config/config.php (файл создаёт install.php).
- * Использование: config('debug', false)
+ * Чтение настроек из config/config.php
  */
 
 declare(strict_types=1);

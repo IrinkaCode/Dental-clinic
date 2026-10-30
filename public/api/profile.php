@@ -1,7 +1,6 @@
 <?php
 /**
- * POST api/profile.php — изменение личных данных.
- * Тело (JSON): full_name, email, phone, birth_date
+ * Изменение личных данных
  */
 
 declare(strict_types=1);

@@ -1,7 +1,6 @@
 <?php
 /**
  * Подключение к базе данных SQLite через PDO.
- * Использование:  $stmt = db()->prepare('SELECT ... WHERE id = ?'); $stmt->execute([$id]);
  */
 
 declare(strict_types=1);
@@ -20,9 +19,9 @@ function db(): PDO
     }
 
     $pdo = new PDO('sqlite:' . DB_PATH, null, null, [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // ошибки SQL — исключения
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // строки как ассоциативные массивы
-        PDO::ATTR_EMULATE_PREPARES   => false,                  // настоящие подготовленные запросы
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
 
     $pdo->exec('PRAGMA foreign_keys = ON');   // в SQLite внешние ключи по умолчанию выключены

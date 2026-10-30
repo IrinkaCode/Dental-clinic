@@ -1,8 +1,5 @@
 /**
- * Запись на приём (booking.html).
- *
- * Порядок: услуга → врачи этой услуги → дни и время по расписанию врача → запись.
- * Свободное время рассчитывает сервер; при записи он проверяет его ещё раз.
+ * Запись на приём
  */
 'use strict';
 
@@ -173,7 +170,7 @@ function renderTimes() {
     }
 }
 
-/** Карточка выбора (услуга или врач) из шаблона. */
+/** Карточка выбора (услуга или врач) */
 function makeChoice(name, value, title, meta, price) {
     const label = document.getElementById('choice-template').content.firstElementChild.cloneNode(true);
     const input = label.querySelector('input');
@@ -185,7 +182,7 @@ function makeChoice(name, value, title, meta, price) {
     return label;
 }
 
-/** Кнопка даты или времени из шаблона. */
+/** Кнопка даты или времени */
 function makeSlot(name, value, text, sub, disabled) {
     const label = document.getElementById('slot-template').content.firstElementChild.cloneNode(true);
     const input = label.querySelector('input');

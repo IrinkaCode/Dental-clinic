@@ -34,7 +34,6 @@ function findUserById(int $id): ?array
 
 /**
  * Создаёт пользователя. Персональные данные шифруются, пароль хешируется.
- * $data: email, password, full_name, phone (необяз.), birth_date (необяз.)
  */
 function createUser(array $data, string $role = 'patient'): int
 {

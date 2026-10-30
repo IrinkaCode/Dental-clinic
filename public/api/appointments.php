@@ -1,7 +1,6 @@
 <?php
 /**
- * GET api/appointments.php — записи текущего пациента:
- * { upcoming: [...], history: [...], cancel_min_hours: 2 }
+ * Записи текущего пациента
  */
 
 declare(strict_types=1);

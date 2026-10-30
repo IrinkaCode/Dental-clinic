@@ -1,7 +1,6 @@
 <?php
 /**
- * POST api/login.php — вход.
- * Тело (JSON): email, password
+ * Вход
  */
 
 declare(strict_types=1);

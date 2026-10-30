@@ -32,7 +32,7 @@
     src: url('../fonts/golos-text-latin-wght-normal.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-/* Знак рубля «₽» лежит в этой части шрифта; файл загружается только там, где он есть на странице */
+/* Знак рубля «₽» */
 @font-face {
     font-family: 'Golos Text';
     font-style: normal;
@@ -50,8 +50,8 @@
     --line:     #D3E0D0;   /* рамки и разделители */
     --ink:      #1F2B25;   /* основной текст */
     --muted:    #56695B;   /* второстепенный текст */
-    --brand:    #43A047;   /* фирменный зелёный из логотипа (для декора, не для текста) */
-    --pine:     #2E7D32;   /* основной цвет: кнопки, ссылки (темнее фирменного, чтобы текст читался) */
+    --brand:    #43A047;   /* фирменный зелёный из логотипа  */
+    --pine:     #2E7D32;   /* основной цвет: кнопки, ссылки  */
     --pine-dk:  #1F4E2A;   /* наведение, тёмные панели */
     --sun:      #F4C95D;   /* акцент: талон на приём */
     --danger:   #B3261E;
@@ -68,7 +68,7 @@
     --page-width: 1120px;
 }
 
-/* 2. Базовые стили ---------------------------------------------------- */
+/* 2. Базовые стили  */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -105,10 +105,8 @@ a:hover { color: var(--pine-dk); }
 
 .muted { color: var(--muted); }
 
-/* Атрибут hidden всегда скрывает элемент, даже если у класса задан display */
 [hidden] { display: none !important; }
 
-/* Закрытые страницы скрыты, пока session.js проверяет вход */
 body[data-require-role]:not(.is-ready) { visibility: hidden; }
 
 .visually-hidden {
@@ -119,7 +117,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     white-space: nowrap;
 }
 
-/* 3. Кнопки, формы, сообщения ---------------------------------------- */
+/* 3. Кнопки, формы, сообщения */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -172,7 +170,6 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     border-color: var(--pine);
     box-shadow: 0 0 0 3px var(--mint);
 }
-/* Одинаковая высота однострочных полей и списков */
 .field input,
 .field select { height: 2.875rem; }
 .field input[type="search"] { -webkit-appearance: none; appearance: none; }
@@ -201,7 +198,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .alert[hidden]  { display: none; }
 .page > .alert { margin-bottom: 1.5rem; }
 
-/* 4. Вход и регистрация ---------------------------------------------- */
+/* 4. Вход и регистрация  */
 .auth {
     min-height: 100vh;
     display: grid;
@@ -217,8 +214,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     color: #E4F0E1;
 }
 
-/* Полный логотип на светлой подложке: на тёмно-зелёном фоне
-   тёмно-коричневые линии рисунка были бы почти не видны */
+/* Полный логотип на светлой подложке */
 .auth__logo {
     display: inline-block;
     padding: 1.25rem 1.5rem;
@@ -254,7 +250,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 
 .auth__switch { margin-top: 1.5rem; text-align: center; color: var(--muted); }
 
-/* 5. Шапка и каркас --------------------------------------------------- */
+/* 5. Шапка и каркас */
 .topbar {
     background: var(--surface);
     border-bottom: 1px solid var(--line);
@@ -276,7 +272,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .logo__img {
     display: block;
-    height: 2.25rem;   /* размер логотипа меняется здесь */
+    height: 2.25rem;
     width: auto;
 }
 .topbar__nav { display: flex; gap: .25rem; flex: 1; }
@@ -307,7 +303,6 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     gap: 2.5rem;
     align-items: start;
 }
-/* Не даём широкой таблице растянуть колонку сетки */
 .layout-aside > * { min-width: 0; }
 
 .section { margin-bottom: 3rem; }
@@ -332,9 +327,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .contacts dd { margin: 0 0 1rem; }
 .contacts dd:last-child { margin-bottom: 0; }
 
-/* 6. Талон на приём --------------------------------------------------
-   Главный акцент интерфейса: ближайший визит оформлен как бумажный
-   талон к врачу с отрывным корешком. */
+/* 6. Талон на приём */
 .ticket {
     --notch: 14px;
     display: grid;
@@ -409,7 +402,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .empty p { color: var(--muted); }
 
-/* 7. Списки визитов, таблицы, статусы --------------------------------- */
+/* 7. Списки визитов, таблицы, статусы */
 .visit-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
 
 .visit {
@@ -428,7 +421,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .visit__info p { margin: 0; }
 
 .table-wrap {
-    position: relative;   /* скрытые подписи внутри таблицы обрезаются вместе с ней, а не растягивают страницу */
+    position: relative;
     overflow-x: auto;
     background: var(--surface);
     border: 1px solid var(--line);
@@ -461,7 +454,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .status--blocked   { background: var(--danger-bg); color: var(--danger); }
 .status--admin     { background: var(--pine-dk); color: #fff; }
 
-/* 8. Профиль ---------------------------------------------------------- */
+/* 8. Профиль */
 .profile-grid {
     display: grid;
     grid-template-columns: 3fr 2fr;
@@ -471,7 +464,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .profile-grid .panel h2 { margin-bottom: 1.25rem; }
 .form__actions { display: flex; gap: .75rem; flex-wrap: wrap; }
 
-/* 9. Запись на приём -------------------------------------------------- */
+/* 9. Запись на приём */
 .booking-steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
 
 .booking-step {
@@ -500,7 +493,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .booking-step h2 { font-size: 1.1875rem; margin-bottom: 1rem; }
 
-/* Карточки выбора: радиокнопка скрыта, выделяется вся карточка */
+/* Карточки выбора */
 .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .75rem; }
 
 .choice {
@@ -562,7 +555,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     font-weight: 600;
 }
 
-/* 10. Панель администратора ------------------------------------------- */
+/* 10. Панель администратора */
 .admin {
     min-height: 100vh;
     display: grid;
@@ -577,7 +570,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     color: #E4F0E1;
 }
 .admin__logo { padding: 0 .75rem; }
-/* Светлая подложка под логотипом на тёмной боковой панели */
+
 .admin__logo-plate {
     display: inline-block;
     padding: .625rem .75rem;
@@ -633,6 +626,29 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 
 .status--overdue { background: #FBE3C9; color: #7A3E00; }
 
+/* Фото врача: окно редактирования и таблица в панели администратора */
+.photo-upload { display: flex; align-items: center; gap: 1rem; }
+.photo-upload__preview {
+    flex: none;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--mint);
+    display: grid;
+    place-items: center;
+    color: var(--pine-dk);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+.photo-upload__preview img { width: 100%; height: 100%; object-fit: cover; }
+.photo-upload__actions { display: flex; flex-direction: column; align-items: flex-start; gap: .5rem; }
+.photo-upload__actions .btn { margin: 0; }
+.photo-upload__actions .field__hint { margin: 0; }
+
+.avatar-cell { width: 2.75rem; height: 2.75rem; border-radius: 50%; overflow: hidden; background: var(--mint); display: grid; place-items: center; color: var(--pine-dk); font-weight: 700; font-size: .875rem; }
+.avatar-cell img { width: 100%; height: 100%; object-fit: cover; }
+
 /* Список флажков (услуги врача) */
 .field__legend { margin-bottom: .5rem; padding: 0; font-weight: 500; font-size: .9375rem; }
 .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 1rem; }
@@ -655,7 +671,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 
 .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: .9375rem; }
 
-/* Модальное окно редактирования (элемент <dialog>) */
+/* Модальное окно редактирования */
 .modal {
     width: min(520px, calc(100% - 2rem));
     padding: 0;
@@ -681,7 +697,8 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     background: var(--enamel);
 }
 
-/* 10а. Главная страница --------------------------------------------- */
+/* 10а. Главная страница  */
+
 .btn--large { padding: .9rem 1.5rem; font-size: 1.0625rem; }
 .btn--sun { background: var(--sun); color: var(--ink); }
 .btn--sun:hover { background: #F7D67F; color: var(--ink); }
@@ -713,7 +730,6 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .hero__lead { max-width: 34rem; margin-bottom: 2rem; font-size: 1.1875rem; color: var(--muted); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; }
 
-/* Талон слегка повёрнут, как положенный на стол бумажный */
 .hero__ticket {
     grid-template-columns: minmax(0, 1fr) 170px;
     transform: rotate(-2.5deg);
@@ -735,7 +751,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .home-block__head p { margin: 0; }
 .home-block__title { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: -.025em; margin-bottom: .5rem; }
 
-/* О нас: текст слева, преимущества списком справа */
+/* О нас */
 .about {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
@@ -745,7 +761,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .about__text .home-block__title { margin-bottom: 1.25rem; }
 .about__text p { max-width: 36rem; margin-bottom: 1rem; color: var(--muted); }
 .about__text .about__lead { font-size: 1.25rem; line-height: 1.45; color: var(--ink); }
-/* Фото клиники: без тени, с мягкими углами и тонкой рамкой */
+/* Фото клиники */
 .about__photo { margin: 0; justify-self: end; width: 100%; max-width: 27rem; }
 .about__photo img {
     display: block;
@@ -755,7 +771,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     border-radius: var(--radius-m);
 }
 
-/* «Как записаться» — настоящая последовательность, поэтому с номерами */
+/* «Как записаться» */
 .how {
     list-style: none;
     margin: 1.5rem 0 0;
@@ -801,20 +817,35 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 
 /* Врачи */
-.doctors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.doctors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
 .doctor-card {
-    padding: 1.5rem;
+    overflow: hidden;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius-m);
 }
-.doctor-card h3 { margin-bottom: .25rem; font-size: 1.125rem; }
-.doctor-card p { margin: 0 0 .75rem; }
-.doctor-card p:last-child { margin-bottom: 0; }
+.doctor-card__photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: var(--mint);
+}
+.doctor-card__photo--placeholder {
+    display: grid;
+    place-items: center;
+    color: var(--pine-dk);
+    font-weight: 700;
+    font-size: 2rem;
+}
+.doctor-card__body { padding: 1.25rem 1.5rem 1.5rem; }
+.doctor-card__body h3 { margin-bottom: .25rem; font-size: 1.125rem; }
+.doctor-card__body p { margin: 0 0 .75rem; }
+.doctor-card__body p:last-child { margin-bottom: 0; }
 .doctor-card__specialty { font-weight: 500; color: var(--pine); }
 .doctor-card__services { font-size: .875rem; color: var(--muted); }
 
-/* Контакты на тёмном фоне */
+/* Контакты */
 .contacts-band { padding: clamp(3rem, 6vw, 4.5rem) 1.5rem; background: var(--pine-dk); color: #E4F0E1; }
 .contacts-band__inner {
     max-width: var(--page-width);
@@ -842,7 +873,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 }
 .site-footer a { color: var(--muted); }
 
-/* 10б. Юридические страницы (согласие на обработку данных) ------------ */
+/* 10б. Юридические страницы (согласие на обработку данных) */
 .topbar__spacer { flex: 1; }
 
 .doc { max-width: 46rem; }
@@ -860,7 +891,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     border-top: 1px solid var(--line);
 }
 
-/* 10в. Уведомление о cookie и ссылки в подвале -------------------------- */
+/* 10в. Уведомление о cookie и ссылки в подвале */
 .cookie-notice {
     position: fixed;
     left: 1rem;
@@ -884,7 +915,7 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
 .site-footer__links { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
 .doc code { padding: .0625rem .375rem; background: var(--enamel); border-radius: 4px; font-size: .875em; }
 
-/* 11. Адаптивность ---------------------------------------------------- */
+/* 11. Адаптивность */
 @media (max-width: 900px) {
     .layout-aside,
     .profile-grid { grid-template-columns: 1fr; }
@@ -941,5 +972,5 @@ body[data-require-role]:not(.is-ready) { visibility: hidden; }
     .hero__ticket { animation: none; }
 }
 
-/* Кнопка удаления в окне прижата влево, остальные — вправо */
+/* Кнопка удаления */
 .modal__footer .btn--danger { margin-right: auto; }

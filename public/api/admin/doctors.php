@@ -1,10 +1,6 @@
 <?php
 /**
- * Врачи (только администратор).
- *
- * GET  api/admin/doctors.php   — все врачи (с id оказываемых услуг) и список всех услуг
- * POST api/admin/doctors.php   {action: 'create' | 'update' | 'delete', ...}
- *      поля: full_name, specialty, description, is_active, service_ids: [1, 2, ...]
+ * Врачи (только администратор)
  */
 
 declare(strict_types=1);
@@ -15,7 +11,7 @@ require_once __DIR__ . '/../../../src/admin.php';
 $admin = adminStart();
 
 if (!isPost()) {
-    $doctors = db()->query('SELECT id, full_name, specialty, description, is_active FROM doctors ORDER BY full_name')->fetchAll();
+    $doctors = db()->query('SELECT id, full_name, specialty, description, photo, is_active FROM doctors ORDER BY full_name')->fetchAll();
     $links   = db()->query('SELECT doctor_id, service_id FROM doctor_services')->fetchAll();
 
     foreach ($doctors as &$doctor) {

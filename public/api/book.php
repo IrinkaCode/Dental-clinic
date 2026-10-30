@@ -1,7 +1,6 @@
 <?php
 /**
- * POST api/book.php — запись на приём.
- * Тело (JSON): service_id, doctor_id, date ('YYYY-MM-DD'), time ('HH:MM'), comment
+ * Запись на приём
  */
 
 declare(strict_types=1);
@@ -31,7 +30,6 @@ if (countActiveAppointments($user['id']) >= MAX_ACTIVE_APPOINTMENTS) {
         . ' запланированных приёмов. Новая запись станет доступна после одного из них.', 409);
 }
 
-// Время проверяется той же функцией, что строит список свободных слотов:
 // нельзя записаться на время вне расписания, в прошлое или на занятое.
 if (!isSlotFree($doctorId, $service['duration_min'], $user['id'], $date, $time)) {
     jsonError('Это время уже занято или недоступно. Выберите другое.', 409, [], 'slot');

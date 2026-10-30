@@ -1,7 +1,5 @@
 /**
- * Главная страница (index.html): прайс-лист, врачи и контакты из базы,
- * кнопки «Записаться» и «Войти» в зависимости от того, вошёл ли пользователь.
- * Страница открыта для всех; данные берутся из общедоступных обработчиков API.
+ * Главная страница: прайс-лист, врачи и контакты из базы
  */
 'use strict';
 
@@ -18,11 +16,11 @@ async function setupAccountLinks() {
     try {
         ({ user } = await api.get('me.php'));
     } catch {
-        // сервер недоступен — оставляем ссылки по умолчанию
+
     }
 
     const account = document.getElementById('account-link');
-    let bookingHref = 'login.html?next=booking.html';   // после входа сразу откроется запись
+    let bookingHref = 'login.html?next=booking.html';
 
     if (user?.role === 'admin') {
         account.textContent = 'Панель администратора';
@@ -67,7 +65,7 @@ async function loadPrices() {
 
             const price = document.createElement('span');
             price.className = 'price-row__price';
-            price.textContent = fmt.money(service.price);
+            price.textContent = 'от\u00A0' + fmt.money(service.price);
 
             li.append(info, duration, price);
             list.append(li);
@@ -88,25 +86,30 @@ async function loadDoctors() {
         for (const doctor of doctors) {
             const card = document.createElement('article');
             card.className = 'doctor-card';
+            card.append(ui.coverPhoto(doctor.full_name, doctor.photo, 'doctor-card__photo'));
+
+            const body = document.createElement('div');
+            body.className = 'doctor-card__body';
 
             const name = document.createElement('h3');
             name.textContent = doctor.full_name;
             const specialty = document.createElement('p');
             specialty.className = 'doctor-card__specialty';
             specialty.textContent = doctor.specialty;
-            card.append(name, specialty);
+            body.append(name, specialty);
 
             if (doctor.description) {
                 const description = document.createElement('p');
                 description.textContent = doctor.description;
-                card.append(description);
+                body.append(description);
             }
             if (doctor.services.length) {
                 const services = document.createElement('p');
                 services.className = 'doctor-card__services';
                 services.textContent = 'Принимает: ' + doctor.services.join(', ').toLowerCase();
-                card.append(services);
+                body.append(services);
             }
+            card.append(body);
             grid.append(card);
         }
         status.hidden = doctors.length > 0;
@@ -136,6 +139,5 @@ async function loadClinic() {
         headerPhone.textContent = clinic.phone || '';
         headerPhone.href = tel;
     } catch {
-        // контакты не критичны для работы страницы
     }
 }

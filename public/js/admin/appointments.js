@@ -1,5 +1,5 @@
 /**
- * Раздел «Записи»: показатели, фильтры, отметка «Состоялся», создание и перенос записей.
+ * Раздел «Записи»: показатели, фильтры, отметка «Состоялся», создание и перенос записей
  */
 'use strict';
 
@@ -10,11 +10,11 @@ adminSections.appointments = {
 
     init() {
         const filter = document.getElementById('appointments-filter');
-        filter.elements.date_from.value = admin.today();   // по умолчанию — с сегодняшнего дня
+        filter.elements.date_from.value = admin.today();
         filter.addEventListener('input', admin.debounce(() => this.loadList()));
         filter.addEventListener('submit', (e) => e.preventDefault());
 
-        // Карточка «Ожидают отметки» показывает прошедшие неотмеченные приёмы
+        // Карточка «Ожидают отметки»
         document.getElementById('show-overdue').addEventListener('click', () => {
             filter.reset();
             filter.elements.status.value = 'overdue';

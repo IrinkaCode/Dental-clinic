@@ -1,6 +1,6 @@
 <?php
 /**
- * Запись на приём: доступные услуги, врачи и расчёт свободного времени.
+ * Запись на приём: доступные услуги, врачи и расчёт свободного времени
  */
 
 declare(strict_types=1);
@@ -13,7 +13,7 @@ const BOOKING_DAYS_AHEAD      = 14;   // на сколько дней вперё
 const BOOKING_MIN_LEAD_MIN    = 60;   // не раньше чем через час от текущего времени
 const MAX_ACTIVE_APPOINTMENTS = 5;    // сколько будущих записей может быть у пациента одновременно
 
-/** Услуги, которые можно забронировать (активные и хотя бы с одним активным врачом). */
+/** Услуги, которые можно забронировать (активные и хотя бы с одним активным врачом) */
 function activeServices(): array
 {
     $rows = db()->query(
@@ -44,7 +44,7 @@ function findActiveService(int $id): ?array
     return null;
 }
 
-/** Активные врачи, оказывающие услугу. */
+/** Активные врачи, оказывающие услугу */
 function doctorsForService(int $serviceId): array
 {
     $stmt = db()->prepare(
@@ -63,11 +63,11 @@ function doctorsForService(int $serviceId): array
     return $rows;
 }
 
-/** Все работающие врачи со списком названий доступных услуг. */
+/** Все работающие врачи со списком названий доступных услуг */
 function activeDoctors(): array
 {
     $doctors = db()->query(
-        'SELECT id, full_name, specialty, description FROM doctors WHERE is_active = 1 ORDER BY full_name'
+        'SELECT id, full_name, specialty, description, photo FROM doctors WHERE is_active = 1 ORDER BY full_name'
     )->fetchAll();
 
     $stmt = db()->prepare(
@@ -95,9 +95,6 @@ function doctorProvidesService(int $doctorId, int $serviceId): bool
 }
 
 /**
- * Дни на BOOKING_DAYS_AHEAD вперёд со временем приёма.
- * Для каждого дня: date, weekday (1 = пн), times: [{time: '09:00', free: true}, ...]
- *
  * Время занято, если пересекается с запланированным приёмом
  * этого врача или с другой записью этого же пациента.
  */
@@ -154,7 +151,7 @@ function availableDays(int $doctorId, int $durationMin, int $userId): array
     return $days;
 }
 
-/** Пересекается ли интервал [$start, $end) хотя бы с одним из занятых. */
+/** Пересекается ли интервал хотя бы с одним из занятых. */
 function overlapsAny(array $busy, string $start, string $end): bool
 {
     foreach ($busy as $interval) {
@@ -165,7 +162,7 @@ function overlapsAny(array $busy, string $start, string $end): bool
     return false;
 }
 
-/** Свободно ли время $date $time для записи (проверка той же логикой, что и показ слотов). */
+/** Свободно ли время для записи (проверка той же логикой, что и показ слотов). */
 function isSlotFree(int $doctorId, int $durationMin, int $userId, string $date, string $time): bool
 {
     foreach (availableDays($doctorId, $durationMin, $userId) as $day) {

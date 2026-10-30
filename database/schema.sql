@@ -1,10 +1,7 @@
 -- =====================================================================
 --  Стоматологическая клиника — схема базы данных SQLite
---
 --  Персональные данные пользователей хранятся только в зашифрованном
---  виде (поля *_enc), пароль — только в виде хеша (password_hash).
---  Пользователи не создаются в этом файле: их данные нужно шифровать,
---  поэтому администратор и демо-пациент создаются скриптом install.php.
+--  виде, пароль — только в виде хеша (password_hash).
 -- =====================================================================
 
 PRAGMA foreign_keys = ON;
@@ -37,7 +34,7 @@ CREATE TABLE IF NOT EXISTS doctors (
     full_name    TEXT    NOT NULL,
     specialty    TEXT    NOT NULL,
     description  TEXT,
-    photo        TEXT,                          -- путь к файлу, например img/doctors/1.jpg
+    photo        TEXT,
     is_active    INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1))
 );
 
@@ -48,7 +45,7 @@ CREATE TABLE IF NOT EXISTS services (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     name          TEXT    NOT NULL UNIQUE,
     description   TEXT,
-    price         INTEGER NOT NULL CHECK (price >= 0),       -- цена в рублях
+    price         INTEGER NOT NULL CHECK (price >= 0),
     duration_min  INTEGER NOT NULL CHECK (duration_min > 0 AND duration_min % 15 = 0),
     is_active     INTEGER NOT NULL DEFAULT 1 CHECK (is_active IN (0, 1))
 );
@@ -64,7 +61,7 @@ CREATE TABLE IF NOT EXISTS doctor_services (
 
 -- ---------------------------------------------------------------------
 --  Расписание врачей: один интервал работы на день недели
---  weekday: 1 = понедельник ... 7 = воскресенье (как date('N') в PHP)
+--  weekday: 1 = понедельник ... 7 = воскресенье
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS doctor_schedule (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,16 +75,15 @@ CREATE TABLE IF NOT EXISTS doctor_schedule (
 
 -- ---------------------------------------------------------------------
 --  Записи на приём (и будущие, и история посещений)
---  Даты хранятся строкой 'YYYY-MM-DD HH:MM' — такие строки
---  корректно сравниваются операторами < и >.
+--  Даты хранятся строкой 'YYYY-MM-DD HH:MM'
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS appointments (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id     INTEGER NOT NULL REFERENCES users(id)    ON DELETE CASCADE,
     doctor_id   INTEGER NOT NULL REFERENCES doctors(id)  ON DELETE RESTRICT,
     service_id  INTEGER NOT NULL REFERENCES services(id) ON DELETE RESTRICT,
-    start_at    TEXT    NOT NULL,              -- начало приёма
-    end_at      TEXT    NOT NULL,              -- начало + длительность услуги
+    start_at    TEXT    NOT NULL,
+    end_at      TEXT    NOT NULL,
     status      TEXT    NOT NULL DEFAULT 'planned'
                         CHECK (status IN ('planned', 'completed', 'cancelled')),
     comment     TEXT,
@@ -145,7 +141,7 @@ CREATE TABLE IF NOT EXISTS clinic_info (
 CREATE TABLE IF NOT EXISTS audit_log (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id     INTEGER REFERENCES users(id) ON DELETE SET NULL,
-    action      TEXT    NOT NULL,              -- например: login, user_block, appointment_cancel
+    action      TEXT    NOT NULL,
     table_name  TEXT,
     record_id   INTEGER,
     created_at  TEXT    NOT NULL DEFAULT (datetime('now', 'localtime'))
@@ -183,7 +179,7 @@ INSERT OR IGNORE INTO doctor_schedule (doctor_id, weekday, time_start, time_end)
 
 INSERT OR IGNORE INTO clinic_info (key, value) VALUES
     ('name',          'Стоматологическая клиника «АС Дент»'),
-    ('address',       'г. Москва, ул. Примерная, д. 10'),
-    ('phone',         '+7 (495) 123-45-67'),
-    ('email',         'info@ulybka-clinic.ru'),
+    ('address',       'г. Калининград, ул. Юбилейная, д. 12'),
+    ('phone',         '+7 (911) 451-45-12'),
+    ('email',         'info@asdent-clinic.ru'),
     ('working_hours', 'Пн–Пт 09:00–20:00, Сб 10:00–15:00, Вс — выходной');

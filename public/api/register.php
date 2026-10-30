@@ -1,7 +1,6 @@
 <?php
 /**
- * POST api/register.php — регистрация пациента.
- * Тело (JSON): full_name, email, phone, birth_date, password, password_confirm, consent
+ * Регистрация пациента
  */
 
 declare(strict_types=1);

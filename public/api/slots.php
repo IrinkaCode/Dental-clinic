@@ -1,6 +1,6 @@
 <?php
 /**
- * GET api/slots.php?doctor_id=1&service_id=1 — дни и время для записи.
+ * Дни и время для записи
  */
 
 declare(strict_types=1);

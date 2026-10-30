@@ -4,3 +4,7 @@ database/*.sqlite
 database/*.sqlite-*
 logs/*.log
 .idea/
+
+# Загруженные фото врачей — данные, созданные в приложении, а не часть кода
+public/img/doctors/*
+!public/img/doctors/.gitkeep

@@ -7,10 +7,10 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/db.php';
 
-/** За сколько часов до приёма пациент ещё может отменить запись сам. */
+/** За сколько часов до приёма пациент ещё может отменить запись сам */
 const CANCEL_MIN_HOURS = 2;
 
-/** Текущее время в формате, в котором даты хранятся в БД. */
+/** Текущее время в формате, в котором даты хранятся в БД */
 function nowDb(): string
 {
     return date('Y-m-d H:i');
@@ -55,7 +55,7 @@ function appointmentsForUser(int $userId): array
     return ['upcoming' => $upcoming, 'history' => array_reverse($history)];
 }
 
-/** Можно ли ещё отменить приём, начинающийся в $startAt. */
+/** Можно ли ещё отменить приём */
 function canCancelAt(string $startAt): bool
 {
     return strtotime($startAt) - time() >= CANCEL_MIN_HOURS * 3600;

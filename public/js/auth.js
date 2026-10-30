@@ -1,9 +1,5 @@
 /**
- * Страницы входа (login.html) и регистрации (register.html).
- *
- * Параметр ?next=booking.html возвращает пользователя после входа
- * на страницу, с которой его отправили на вход (например, с главной
- * по кнопке «Записаться на приём»).
+ * Страницы входа и регистрации
  */
 'use strict';
 
@@ -13,13 +9,15 @@ const NEXT_PAGES = {
     admin: ['admin.html'],
 };
 
-/** Куда направить после входа: на страницу из ?next=, если она разрешена для роли, иначе — домой. */
+/** Куда направить после входа: на страницу если она разрешена для роли, иначе — домой. */
 function pageAfterLogin(user, fallback) {
     const next = new URLSearchParams(location.search).get('next');
     return NEXT_PAGES[user.role]?.includes(next) ? next : fallback;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    fillClinicContacts();
+
     // Параметр next сохраняется при переходе между входом и регистрацией
     document.querySelectorAll('a[data-keep-next]').forEach((link) => {
         link.href = link.getAttribute('href') + location.search;
@@ -49,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         registerForm.addEventListener('submit', (event) => {
             event.preventDefault();
 
-            // Быстрая проверка в браузере. Окончательно всё проверяет сервер.
+            // Быстрая проверка в браузере
             const data = ui.formData(registerForm);
             if (data.password !== data.password_confirm) {
                 ui.clearErrors(registerForm);
@@ -73,5 +71,28 @@ async function submitAuthForm(form, endpoint, errorBox, busyText) {
         ui.showAlert(errorBox, error.message);
         ui.showFieldErrors(form, error.fields || {});
         ui.setBusy(button, false);
+    }
+}
+
+/** Контакты клиники на странице входа берутся из базы: их меняет администратор в панели. */
+async function fillClinicContacts() {
+    const targets = document.querySelectorAll('[data-clinic]');
+    if (!targets.length) {
+        return;
+    }
+    try {
+        const { clinic } = await api.get('clinic.php');
+        targets.forEach((el) => {
+            const key = el.dataset.clinic;
+            if (!clinic[key]) {
+                return;
+            }
+            el.textContent = clinic[key];
+            if (el.tagName === 'A') {
+                el.href = key === 'phone' ? 'tel:' + clinic[key].replace(/[^\d+]/g, '') : 'mailto:' + clinic[key];
+            }
+        });
+    } catch {
+        // контакты не критичны для входа
     }
 }

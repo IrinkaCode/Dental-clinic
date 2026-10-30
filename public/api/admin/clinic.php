@@ -1,8 +1,6 @@
 <?php
 /**
- * Контакты клиники (только администратор). Чтение — общий api/clinic.php.
- *
- * POST api/admin/clinic.php  {name, address, phone, email, working_hours}
+ * Контакты клиники (только администратор)
  */
 
 declare(strict_types=1);

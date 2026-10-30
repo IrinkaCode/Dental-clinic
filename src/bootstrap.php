@@ -1,8 +1,6 @@
 <?php
 /**
- * Общая инициализация для всех обработчиков в public/api/.
- * Первая строка каждого обработчика:
- *     require __DIR__ . '/../../src/bootstrap.php';
+ * Общая инициализация для всех обработчиков
  *
  * Здесь настраиваются:
  *  - обработка ошибок (пользователь видит общий текст, подробности пишутся в лог);
@@ -57,7 +55,7 @@ set_exception_handler(static function (Throwable $e): void {
 
 // Часовой пояс клиники: от него зависят «будущие» и «прошедшие» визиты.
 // На хостинге сервер может работать по UTC, поэтому задаём явно.
-date_default_timezone_set((string)config('timezone', 'Europe/Moscow'));
+date_default_timezone_set((string)config('timezone', 'Europe/Kaliningrad'));
 
 // ---------------------------------------------------------------------
 //  Заголовки ответа
@@ -135,8 +133,7 @@ function jsonResponse(array $data, int $status = 200): never
 }
 
 /**
- * Ответ с ошибкой.
- * $fields — ошибки по полям формы, $code — машинный код для JavaScript.
+ * Ответ с ошибкой
  */
 function jsonError(string $message, int $status = 400, array $fields = [], ?string $code = null): never
 {

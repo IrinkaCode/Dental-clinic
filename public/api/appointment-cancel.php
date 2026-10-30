@@ -1,7 +1,6 @@
 <?php
 /**
- * POST api/appointment-cancel.php — отмена своей записи пациентом.
- * Тело (JSON): id
+ * Отмена своей записи пациентом
  */
 
 declare(strict_types=1);

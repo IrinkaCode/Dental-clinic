@@ -1,10 +1,6 @@
 <?php
 /**
- * Услуги (только администратор).
- *
- * GET  api/admin/services.php   — все услуги, включая скрытые, с числом врачей
- * POST api/admin/services.php   {action: 'create' | 'update' | 'delete', ...}
- *      поля: name, description, price, duration_min, is_active
+ * Услуги (только администратор)
  */
 
 declare(strict_types=1);

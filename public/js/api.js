@@ -1,9 +1,5 @@
 /**
- * Обращение к PHP API и общие функции для форм.
- *
- * Пути к API относительные ('api/login.php', а не '/api/login.php'),
- * поэтому приложение работает и локально, и на хостинге,
- * в том числе если его разместить во вложенной папке сайта.
+ * Обращение к PHP API и общие функции для форм
  */
 'use strict';
 
@@ -12,7 +8,7 @@ class ApiError extends Error {
     constructor(message, status, fields = {}, code = null) {
         super(message);
         this.status = status;   // HTTP-код ответа (0 — нет связи с сервером)
-        this.fields = fields;   // ошибки по полям формы: { email: '...', ... }
+        this.fields = fields;   // ошибки по полям формы
         this.code = code;       // машинный код: 'csrf', 'unauthorized', 'forbidden'
     }
 }
@@ -82,6 +78,42 @@ const api = {
     post(path, data) {
         return this.request(path, { method: 'POST', data });
     },
+
+    async upload(path, formData, retry = true) {
+        if (!this.csrfToken) {
+            await this.loadCsrf();
+        }
+        let response;
+        try {
+            response = await fetch('api/' + path, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json', 'X-CSRF-Token': this.csrfToken },
+                body: formData,
+            });
+        } catch {
+            throw new ApiError('Нет связи с сервером. Проверьте, что приложение запущено.', 0);
+        }
+
+        let body = null;
+        try {
+            body = await response.json();
+        } catch {
+
+        }
+
+        if (body && body.csrf_token) {
+            this.csrfToken = body.csrf_token;
+        }
+        if (!response.ok) {
+            if (body?.code === 'csrf' && retry) {
+                this.csrfToken = null;
+                return this.upload(path, formData, false);
+            }
+            throw new ApiError(body?.error || `Ошибка сервера (${response.status}).`, response.status, body?.fields || {}, body?.code || null);
+        }
+        return body;
+    },
 };
 
 /** Помощники для форм. */
@@ -95,7 +127,7 @@ const ui = {
         return data;
     },
 
-    /** Показывает ошибки под полями: элементы с атрибутом data-error-for="имя_поля". */
+    /** Показывает ошибки под полями */
     showFieldErrors(form, fields) {
         for (const [name, message] of Object.entries(fields)) {
             const errorEl = form.querySelector(`[data-error-for="${name}"]`);
@@ -139,6 +171,49 @@ const ui = {
     /** «Иванова Анна Сергеевна» → «Иванова Анна» */
     shortName(fullName) {
         return (fullName || '').split(' ').slice(0, 2).join(' ');
+    },
+
+    /** «Смирнова Елена Викторовна» → «СЕ» (инициалы для заглушки аватара). */
+    avatarInitials(fullName) {
+        const parts = (fullName || '').trim().split(/\s+/).filter(Boolean);
+        return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase();
+    },
+
+    /**
+     * Кружок-аватар: фотография, если она есть, иначе инициалы.
+     */
+    avatar(fullName, photoUrl, className) {
+        const el = document.createElement('div');
+        el.className = className;
+        if (photoUrl) {
+            const img = document.createElement('img');
+            img.src = photoUrl;
+            img.alt = '';
+            img.loading = 'lazy';
+            el.append(img);
+        } else {
+            el.textContent = this.avatarInitials(fullName);
+        }
+        return el;
+    },
+
+    /**
+     * Фото на всю ширину карточки
+     * настоящая фотография или плейсхолдер с инициалами того же размера и формы
+     */
+    coverPhoto(fullName, photoUrl, className) {
+        if (photoUrl) {
+            const img = document.createElement('img');
+            img.className = className;
+            img.src = photoUrl;
+            img.alt = '';
+            img.loading = 'lazy';
+            return img;
+        }
+        const el = document.createElement('div');
+        el.className = `${className} ${className}--placeholder`;
+        el.textContent = this.avatarInitials(fullName);
+        return el;
     },
 };
 

@@ -1,7 +1,6 @@
 <?php
 /**
- * POST api/password.php — смена пароля.
- * Тело (JSON): current_password, new_password, new_password_confirm
+ * Смена пароля
  */
 
 declare(strict_types=1);
